@@ -24,7 +24,7 @@
 	}
 	else {
 		out.println("<script>");
-		out.println("alert('아이디를 확인하시고 다시 로그인 해주세요');");
+		out.println("alert('아이디와 비밀번호를 확인하시고 다시 로그인 해주세요');");
 		/* out.println("location.href='test06.jsp';"); */
 		out.println("history.back();");/* 무한루프가 될수 있어서 주의해야한다 잘모르면 위에거 */
 		out.println("</script>");
