@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet({ "/Test4", "/T4", "/T04" })
-public class Test4 extends HttpServlet {
+public class Test04 extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		문서형식을 텍스트 html로 한다  명령어가 이어질때는 ; 하나 하고 해야함 웹에서 ;는 연결어라고 생각

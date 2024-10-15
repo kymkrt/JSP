@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 //매핑된 주소 내가 변경 가능
 @WebServlet("/T02")
-public class Test2 extends HttpServlet {
+public class Test02 extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at2: ").append(request.getContextPath());

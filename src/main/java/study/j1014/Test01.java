@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 //이게 컨트롤러다 
 @WebServlet("/Test1")
-public class Test1 extends HttpServlet {
+public class Test01 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
              
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
