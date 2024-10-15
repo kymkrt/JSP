@@ -20,7 +20,7 @@ public class Test04 extends HttpServlet {
 		//리스폰스를 받아서 html로 보내주는? 메소드
 		PrintWriter out = response.getWriter();
 //		브라우서에서 html로 해석해서 뿌린다 콘텍스트 명
-		out.println("<p><a href='/javaGroup/study/1014/test2.jsp'>test2.jsp로 복귀</a></p>");
+		out.println("<p><a href='/javaGroup/study/1014/test02.jsp'>test02.jsp로 복귀</a></p>");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

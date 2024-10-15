@@ -17,7 +17,7 @@ public class Test05 extends HttpServlet{
 		//출력하는건 리스폰스객체에 있는 겟라이터에의해서 출력을 한다
 		PrintWriter out = response.getWriter();
 		out.println("<h2>이곳은 Test5서블릿입니다</h2>");
-		out.println("<div><a href='/javaGroup/study/1014/test3.jsp'>test3.jsp로</a></div>");
+		out.println("<div><a href='/javaGroup/study/1014/test03.jsp'>test03.jsp로</a></div>");
 		
 	}
 }

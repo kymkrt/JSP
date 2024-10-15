@@ -9,4 +9,43 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <!--Controller 설정 -->
+  <servlet>
+  	<!--별명 클래스명 복사후 첫글자를 소문자로 그 클래스의 이름 -->
+  	<servlet-name>test06</servlet-name>
+  	<!-- 클래스 주소 패키지부터 시작 클래스로 들어갈수 있는 경로 -->
+  	<servlet-class>study.j1014.Test06</servlet-class>
+  </servlet>
+  <!--서블릿 매핑  그 클래스들의 매핑-->
+  <servlet-mapping>
+  	<!-- 별명을 이렇게 하겠다 -->
+  	<servlet-name>test06</servlet-name>
+  	<!-- 들어가는 경로 -->
+  	<url-pattern>/Test06</url-pattern>
+  	<url-pattern>/T06</url-pattern>
+		<url-pattern>/T006</url-pattern>  	
+  </servlet-mapping>
+  
+  <!-- 주소추가? -->
+<!--   <servlet>
+  	<servlet-name>t06</servlet-name>
+  	<servlet-class>study.j1014.Test06</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>t06</servlet-name>
+  	<url-pattern>/T06</url-pattern>
+  </servlet-mapping> -->
+  <!-- 클래스가 서블릿이다 별명하고 주소를 주는데 그걸 매핑함 만약 url 패턴으로 주소가 들어오면 거기에 해당하는 별명으로 
+  가는데 거기에 해당하는 서블릿 주소로 간다 -->
+  <!--
+  <servlet>
+  	<servlet-name>t006</servlet-name>
+  	<servlet-class>study.j1014.Test06</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>t006</servlet-name>
+		<url-pattern>/T006</url-pattern>  	
+  </servlet-mapping>
+  -->
 </web-app>
