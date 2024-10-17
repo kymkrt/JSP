@@ -1,17 +1,16 @@
-package practice;
+package study.j1016;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/hw1")
-public class hw1 extends HttpServlet{
+@WebServlet("/1016/T03Ok_2")
+public class T03Ok_2 extends HttpServlet{
 	
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,7 +24,6 @@ public class hw1 extends HttpServlet{
 		String job = request.getParameter("job");
 		String[] mountains = request.getParameterValues("mountain");
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
-		String fName = request.getParameter("fName")==null ? "" : request.getParameter("fName");
 		
 		//콘솔출력
 		System.out.println("성명 : "+name);
@@ -51,25 +49,24 @@ public class hw1 extends HttpServlet{
 		}
 		System.out.println("다녀온산 : "+mountain);
 		
-		content = content.replace("\n", "<br/>");
 		System.out.println("자기소개 : " + content);
+		content = content.replace("\n", "<br/>");
+		String fName = request.getParameter("fName")==null ? "" : request.getParameter("fName");
 		System.out.println("첨부파일 : " + fName);
 		
-		String viewPage = "";
-		RequestDispatcher dispatcher = null;
-		request.setAttribute("name", name);
-		request.setAttribute("age", age);
-		request.setAttribute("gender", gender);
-		request.setAttribute("hobby", hobby);
-		request.setAttribute("job", job);
-		request.setAttribute("mountain", mountain);
-		request.setAttribute("content", content);
-		request.setAttribute("fName", fName);
-		
-		viewPage = "/study/practice/hw1Res.jsp";
-		dispatcher = request.getRequestDispatcher(viewPage); //내가 보내고자 하는 뷰페이지
-		dispatcher.forward(request, response);
-		
+//		출력을 위한 객체
+		PrintWriter out = response.getWriter();
+		out.println("<h2>기록한 내용들</h2>");
+		out.println("<p>성명 : "+name+"</p>");
+		out.println("<p>나이 : "+age+"</p>");
+		out.println("<p>성별 : "+gender+"</p>");
+		out.println("<p>취미 : "+hobby+"</p>");
+		out.println("<p>직업 : "+job+"</p>");
+		out.println("<p>다녀온산 : "+mountain+"</p>");
+		out.println("<p>자기소개 : <br/>"+content+"</p>");
+		out.println("<p>첨부파일 : "+fName+"</p>");
+		out.println("<hr />");
+		out.println("<p><a href='"+request.getContextPath()+"/study/1016/t03_Form.jsp'>돌아가기</a?</p>");
 	}
 	
 }

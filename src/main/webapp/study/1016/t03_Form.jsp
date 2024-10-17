@@ -66,6 +66,8 @@
   	<!-- 과제는 버튼으로 해서 온클릭해라   -->
   		<input type="submit" value="전송" class="form-control btn btn-success" />
   	</dlv>
+  	<!-- 사용자는 알필요 없는것들 보내는것 감춰저서 보낸다 -->
+  	<input type="hidden" name="flag" />
   </form>
 </div>
 <p><br /></p>
