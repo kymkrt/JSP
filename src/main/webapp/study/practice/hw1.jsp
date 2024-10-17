@@ -9,6 +9,22 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="<%=request.getContextPath()%>/js/member.js"></script>
+  <script>
+  	'use strict'
+  	
+  	function fCheck(num) {
+			if(num==1){
+				myform.action=<%=request.getContextPath()%>/hw1;
+				myform.submit();
+			}
+			else if(num==2){
+				myform.action=<%=request.getContextPath()%>/hw2;
+				myform.submit();
+			}
+		}
+  
+  
+  </script>
 </head>
 <body>
 <p><br /></p>
@@ -65,7 +81,9 @@
   	</div>
   	<dlv>
   		<!-- <input type="button" onclick="fCheck()" value="전송" class="form-control btn btn-success" /> -->
-  		<input type="submit" value="전송" class="form-control btn btn-success" />
+  		<input type="button" value="전송(dispatcher)" onclick="fCheck(1)" class="form-control btn btn-primary" />
+  		<input type="button" value="전송(sendRedirect)" onclick="fCheck(2)" class="form-control btn btn-success" />
+  		<input type="reset" value="리셋" class="form-control btn btn-warning" />
   	</dlv>
   </form>
 </div>
