@@ -8,7 +8,7 @@
 	session.setAttribute("sMid", request.getParameter("mid")); //원래는 null값도 처리
 	session.setAttribute("sNickName", request.getParameter("nickName")); //원래는 null값도 처리
 	session.setAttribute("sName", request.getParameter("name")); //원래는 null값도 처리
-
+	
 %>
 <script>
 	alert("세션이 생성/저장 되었습니다");

@@ -20,8 +20,9 @@ public class hw2 extends HttpServlet {
 		System.out.println("hw2");
 		
 		String selec = request.getParameter("selec")==null ? "" : request.getParameter("selec");
-		
+		System.out.println("img2 : "+selec);
 		request.setAttribute("img", selec);
+		request.setAttribute("img2", "2323");
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/study/practice/hw2.jsp");
 		dispatcher.forward(request, response);

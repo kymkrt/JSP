@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	String img = (String)request.getParameter("img");
+	String img = (String)request.getAttribute("img");
+	
+	System.out.println("img : "+img);
 %>
 <!DOCTYPE html>
 <html>
@@ -17,7 +19,7 @@
 			myform.action = "<%=request.getContextPath()%>/hw2";
 			myform.submit(); //이렇게 보내는건 전부 post다
 			
-			document.getElementById("demo").innerHTML = "<img src='"+<%=img%>+"'/>"";
+			// document.getElementById("demo").innerHTML = "<img src='"+<%=img%>+"'/>";
 		}
   </script>
 </head>
@@ -26,7 +28,7 @@
 <div class="container">
   <div>사진을 고르세요</div>
   <form name="myform" id="myform">
-	<select name="selec" class="form-control mb-3" onclick="fCheck()">
+	<select name="selec" class="form-control mb-3" onchange="fCheck()">
 		<!-- <select name="sel" class="form-selec mb-3" onclick="fCheck()"> 부트스트랩5 -->
   		<option value="<%=request.getContextPath()%>/images/1.jpg">1.jpg</option>
   		<option value="<%=request.getContextPath()%>/images/2.jpg">2.jpg</option>
@@ -38,7 +40,13 @@
   <button onclick="fCheck()" class="form-control btn btn-info">사진변경</button>
 <hr/>
 <div id="demo"></div>
+<hr/>
+${img}::::
+${img2}::::
 </div>
 <p><br /></p>
+<script>
+	document.getElementById("demo").innerHTML = "<img src='"+<%=img%>+"'/>";
+</script>
 </body>
 </html>

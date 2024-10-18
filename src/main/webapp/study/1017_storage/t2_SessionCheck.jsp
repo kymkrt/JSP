@@ -1,3 +1,4 @@
+<%@page import="java.util.Enumeration"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String mid = (String)session.getAttribute("sMid"); //객체라서 스트링으로 형변화
@@ -8,6 +9,25 @@
 	pageContext.setAttribute("mid", mid);
 	pageContext.setAttribute("nickName", nickName);
 	pageContext.setAttribute("name", name);
+
+	//저장된 세션값들 확인하기
+	Enumeration enumCk = session.getAttributeNames();
+	String sessionName = "";
+	String sessionName_ = ""; //임시변수 뒤에_ 혹은 앞에_
+	String sessionValue = "";
+	
+	//열거형으로 들어가있을때는 ?
+			//앞에 bof 뒤에 eof 주의
+	while(enumCk.hasMoreElements()) { //리턴타입 불리언 있으면 참 없으면 거짓
+		//임시변수
+		sessionName_ = enumCk.nextElement().toString(); //객체라 타입 맞춰줘야함 임시변수는 스트링 여기다 담기
+		//세션이름이 저장
+		sessionName += sessionName_ + "/";
+		//세션 값이 저장
+		sessionValue += session.getAttribute(sessionName_) + "/";
+	}
+	System.out.println(sessionName + "\n" + sessionValue);
+	
 %>
 <!-- 출력하는거라 뷰 -->
 <!DOCTYPE html>
