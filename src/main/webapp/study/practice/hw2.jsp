@@ -30,7 +30,7 @@
   	</select>
   </form>
   <button onclick="fCheck()" class="form-control btn btn-info">사진변경</button>
-<hr />
+<hr/>
 <div id="demo"></div>
 </div>
 <p><br /></p>
