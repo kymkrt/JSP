@@ -1,7 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	String img = (String)request.getParameter("img");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +9,9 @@
   	'use strict'
   	
   	function fCheck() {
-			let selec = myform.selec.value;
-			
-			myform.action = "<%=request.getContextPath()%>/hw2";
-			myform.submit(); //이렇게 보내는건 전부 post다
-			
-			document.getElementById("demo").innerHTML = "<img src='"+<%=img%>+"'/>"";
+			let selec = myform.sel.value;
+			let img = "<img src='"+selec+"'/>";
+			document.getElementById("demo").innerHTML = img;
 		}
   </script>
 </head>
@@ -26,7 +20,7 @@
 <div class="container">
   <div>사진을 고르세요</div>
   <form name="myform" id="myform">
-	<select name="selec" class="form-control mb-3" onclick="fCheck()">
+	<select name="sel" class="form-control mb-3" onclick="fCheck()">
 		<!-- <select name="sel" class="form-selec mb-3" onclick="fCheck()"> 부트스트랩5 -->
   		<option value="<%=request.getContextPath()%>/images/1.jpg">1.jpg</option>
   		<option value="<%=request.getContextPath()%>/images/2.jpg">2.jpg</option>
@@ -36,7 +30,7 @@
   	</select>
   </form>
   <button onclick="fCheck()" class="form-control btn btn-info">사진변경</button>
-<hr/>
+<hr />
 <div id="demo"></div>
 </div>
 <p><br /></p>
