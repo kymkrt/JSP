@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	Cookie[] cookies = request.getCookies();
+	String check = cookies[0].getValue();
+	System.out.println(check);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,14 +16,12 @@
 <div class="container">
 	<h2>로그인</h2>
 	<hr/>
-  <form id="myform" method="post" action="<%=request.getContextPath() %>/HwOk3">
-  	<div>아이디<input type="text" class="form-control mb-3"></div>
-  	<div>비밀번호<input type="password" class="form-control mb-3"></div>
-		<div class="row mb-3">
-	  	<div class="col"><button type="submit" class="btn btn-success ">로그인</button></div>
-	  	<div class="col"><button type="reset" class="btn btn-warning">새로</button></div>
-	  </div>
-	  <div style="text-align: center"><input type="checkbox" id="midSave" /><label for="midSave">아이디 저장</label></div>
+  <form id="myform" name="myform" method="post" action="<%=request.getContextPath() %>/practice/HwOk3">
+  	<div>아이디<input type="text" name="mid" value="${check}" class="form-control mb-3"></div>
+  	<div>비밀번호<input type="password" name="pwd" class="form-control mb-3"></div>
+  	<label for="saveId"><input type="checkbox" name="saveId" id="saveId" value="saveId" />아이디저장</label>
+  	<div><button type="submit" class="form-control btn btn-success mb-3">로그인</button></div>
+  	<div><button type="reset" class="form-control btn btn-warning">초기화</button></div>
   </form>
 </div>
 <p><br /></p>

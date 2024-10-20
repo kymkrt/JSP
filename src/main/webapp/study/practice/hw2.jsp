@@ -37,7 +37,7 @@
   		<option value="<%=request.getContextPath()%>/images/5.jpg">5.jpg</option>
   	</select>
   </form>
-  <button onclick="fCheck()" class="form-control btn btn-info">사진변경</button>
+  <button onclick="fCheck()" class="form-control btn btn-info">사진변경</button>	
 <hr/>
 <div id="demo"></div>
 <hr/>
