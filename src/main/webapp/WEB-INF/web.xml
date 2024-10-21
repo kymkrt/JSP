@@ -48,4 +48,18 @@
 		<url-pattern>/T006</url-pattern>  	
   </servlet-mapping>
   -->
+  
+  <!--Filter 처리(한글처리)  -->
+ <!--  <filter>
+  서블릿 하고 비슷하다 별명 소문자 등등 
+  	<filter-name>filterTest</filter-name>
+  	<filter-class>filter.FilterTest</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>filterTest</filter-name>
+  	와일드 카드 * 
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping> -->
+  
+  
 </web-app>
