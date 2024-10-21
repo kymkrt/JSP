@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import study.j1018.MemberVO;
 
 @WebServlet("/1018/Jstl3Ok2")
 public class Jstl3Ok2 extends HttpServlet{

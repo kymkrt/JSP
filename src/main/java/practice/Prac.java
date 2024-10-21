@@ -13,18 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 public class Prac extends HttpServlet{
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("text/html; charset=utf-8");
-		resp.getWriter().append("안녕");
-		PrintWriter out = resp.getWriter();
-		out.println("<h2>확인중</h2>");
-		out.println("<div><input type=number class='form-control' autofocus></div>");
-		out.println("<div><a href='/javaGroup/study/practice/prac.jsp' class=btn btn-info>여기인거 같음</a></div>");
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
 		
 	}
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-  	doPost(req, resp);
-  }
 	
 }
