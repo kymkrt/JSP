@@ -1,9 +1,9 @@
 package practice;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -21,5 +21,14 @@ public class PracFilter extends HttpFilter implements Filter {
 		System.out.println("필터후");
 		
 	}
-
+	
+	@Override
+	public void init() throws ServletException {
+	}
+	
+	@Override
+	public void destroy() {
+	}
+	
+	
 }
