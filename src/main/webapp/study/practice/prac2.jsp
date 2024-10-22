@@ -13,7 +13,7 @@
 <body>
 <div class="container">
 	<h2>디스패쳐 버전</h2>
-	<a href="<%=request.getContextPath() %>/study/practice/prac.jsp" class="form-control btn btn-success"/>돌아가기</a>
+	<a href="<%=request.getContextPath() %>/study/practice/prac.jsp" class="form-control btn btn-success">돌아가기</a>
 </div>	
 </body>
 </html>
