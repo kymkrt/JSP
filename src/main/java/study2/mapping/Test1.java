@@ -14,6 +14,7 @@ public class Test1 extends HttpServlet{
 	
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("/mapping/Test1 접속");
 		
 		//request.setAttribute("msg", "Hello 안녕");//한글을 필터에 처리 있음
 		

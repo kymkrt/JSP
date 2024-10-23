@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="${ctp}">Home</a>
+ <%--  <a class="navbar-brand" href="${ctp}/">Home</a> --%>
+  <a class="navbar-brand" href="http://192.168.50.58:9090/javaGroup">Home</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -23,8 +24,9 @@
 						Study1		    	
 			   	</button>
 		    	<div class="dropdown-menu">
-			      <a class="dropdown-item" href="${ctp}/mapping/Test1">mapping 연습</a>
-			      <a class="dropdown-item" href="${ctp}/study/mapping/Storage">Storage 연습</a>
+			      <a class="dropdown-item" href="${ctp}/study2/mapping/Test1Ok">mapping(Directory 패턴)</a>
+			      <a class="dropdown-item" href="${ctp}/study2/mapping/Test2">mapping(확장자 패턴)</a>
+			      <a class="dropdown-item" href="${ctp}/study2/test/StorageMenu">Storage 연습</a>
 			      <a class="dropdown-item" href="${ctp}/study/1018_JSTL/el.jsp">EL 연습</a>
 			      <a class="dropdown-item" href="${ctp}/study/1018_JSTL/jstlMenu.jsp">JSTL 연습</a>
     			</div>
