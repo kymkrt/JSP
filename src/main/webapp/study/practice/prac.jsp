@@ -18,9 +18,15 @@
 <p><br /></p>
 <div class="container">
   <form name="myform" method="post" action="${ctp}/Prac">
- 	<button type="submit" class="btn btn-success">여기</button>
- 	
+  	<input type="text" name="an" value="The Amazing Digital Circus" class="form-control" />
+  	<input type="number" name="su" value="10" class="form-control">
+ 		<button type="submit" name="action" value="pomni" class="btn btn-success">폼니</button>
+ 		<button type="submit" name="action" value="kinger" class="btn btn-success">킹어</button>
+ 		<button type="submit" name="action" value="jax" class="btn btn-success">잭스</button>
   </form>
+  an : ${an}
+  <hr/>
+  su : ${su}
   <hr/>
 </div>
 <p><br /></p>
