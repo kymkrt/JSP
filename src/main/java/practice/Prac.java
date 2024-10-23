@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/Prac")
+@WebServlet("*.Prac")
 public class Prac extends HttpServlet{
 	
 	@Override
@@ -21,20 +21,27 @@ public class Prac extends HttpServlet{
 		int su = request.getParameter("su")==null ? 0 : Integer.parseInt(request.getParameter("su"));
 		String action = request.getParameter("action")==null ? "오류" : request.getParameter("action");
 		
-		if(action.equals("pomni")) {
-			
-		}else if(action.equals("kinger")) {
-			
-		}else if(action.equals("jax")) {
-			
-		}
+		PracInter command = null;
 		
 		request.setAttribute("an", an);
 		request.setAttribute("su", su);
 		
-		String viewPage = "";
+		String viewPage = "/study/practice/prac.jsp";
 		
-		viewPage = "/study/practice/prac.jsp";
+		if(action.equals("pomni")) {
+			command = new Pomni();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/practice/pomni.jsp";
+		}else if(action.equals("kinger")) {
+			command = new Kinger();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/practice/kinger.jsp";
+			
+		}else if(action.equals("jax")) {
+			command = new Jax();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/practice/jax.jsp";
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);

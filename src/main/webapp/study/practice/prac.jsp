@@ -17,7 +17,7 @@
 <body>
 <p><br /></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/Prac">
+  <form name="myform" method="post" action="asd.Prac">
   	<input type="text" name="an" value="The Amazing Digital Circus" class="form-control" />
   	<input type="number" name="su" value="10" class="form-control">
  		<button type="submit" name="action" value="pomni" class="btn btn-success">폼니</button>
