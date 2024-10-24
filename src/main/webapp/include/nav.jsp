@@ -29,6 +29,8 @@
 			      <a class="dropdown-item" href="${ctp}/study2/test/StorageMenu">Storage 연습</a>
 			      <a class="dropdown-item" href="${ctp}/study/1018_JSTL/el.jsp">EL 연습</a>
 			      <a class="dropdown-item" href="${ctp}/study/1018_JSTL/jstlMenu.jsp">JSTL 연습</a>
+			      																								<!--.을 안썼으니까 디렉토리패턴  -->
+			      <a class="dropdown-item" href="${ctp}/study2/database/DbList">DataBase 연습</a>
     			</div>
   			</div>
       </li>    
