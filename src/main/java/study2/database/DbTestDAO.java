@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import guest.GuestVO;
 
 public class DbTestDAO {
 	//여기서만 쓸거니까 프라이베이트
