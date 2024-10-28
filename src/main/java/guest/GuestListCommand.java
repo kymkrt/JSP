@@ -7,6 +7,9 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.coyote.Request;
 
 import study2.database.DbTestDAO;
 
@@ -16,6 +19,8 @@ public class GuestListCommand implements GuestInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		GuestDAO dao = new GuestDAO();
+		
+		HttpSession session = request.getSession();
 		
 		//페이지처리
 		//1. 현재 페이지 번호를 구한다(pag)
