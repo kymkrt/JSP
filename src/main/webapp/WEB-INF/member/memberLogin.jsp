@@ -27,6 +27,7 @@
   		<div class="col"><button type="reset" class="btn btn-warning mb-2">다시입력</button></div>
   		<!-- 메세지로 가는게 아니라 MemberJoin.mem 앞에/를 빼줌 -->
   		<div class="col"><button type="button" onclick="location.href='MemberJoin.mem'" class="btn btn-info">회원가입</button></div>
+  		<div class="col"><input type="checkbox" name="idSave" id="idSave" value="idSave" />아이디저장</div>
   	</div>
   </form>
 </div>

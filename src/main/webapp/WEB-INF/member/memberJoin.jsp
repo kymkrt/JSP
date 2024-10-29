@@ -10,14 +10,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>.jsp</title>
+  <title>memberjoin.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="${ctp}/js/woo.js"></script>
   <script type="text/javascript">
   	'use strict'
   	
+  	let swId = 0;
+  	let swNick = 0;
+  	
+  	const regexId = /^[a-zA-Z0-9]{2,20}$/; 
+  	const regexNick = /^[a-zA-Z0-9가-힣]{2,20}$/; 
+  	const regexName = /^[가-힣]{2,10}$/; 
+  	const regexPwd = /^[a-zA-Z0-9\!\@\#\$\%\&\*]{2,20}$/; 
+  	const regexTel = /^[0-9]{2,3}\-{1}[0-9]{3,4}\-{1}[0-9]{3,4}$/; 
+  	//const regexAddress = /^[0-9]{3,4}\-{1}[0-9]{3,4}$/; 
+  	const regexEmail = /^[a-zA-Z0-9]{2,15}\@{1}[a-z]{2,10}\.{1}[a-z]{2,10}$/; 
+  	
   	function fCheck() {
+  	    let mid = myform.mid.value;
+  	    let nickName = myform.nickName.value;
+  	    let pwd = myform.pwd.value;
+  	    
   		let tel2 = myform.tel2.value.trim();
   		let tel3 = myform.tel3.value.trim();
   		if(tel2 == "") tel2 = " ";
@@ -39,31 +54,70 @@
   		//유효성검사(정규식으로 처리) 프론트체크는 requierd부분에서 반드시 처리
   		
   		//alert(tel +" : "+email);
-  		
-			//myform.action = "";
-			
+		if(swId == 0){
+			alert("아이디 중복을 확인해주세요");
+			myform.mid.focus();
+			return false;
+		} else if(swNick == 0) {
+			alert("닉네임 중복을 확인해주세요");
+			myform.nickName.focus();
+			return false;
+		} else if(!regexId.test(mid.trim())) {
+			alert("아이디 형식을 확인해주세요");
+			myform.mid.focus();
+			return false;
+		} else if(!regexNick.test(nickName.trim())) {
+			alert("닉네임 형식을 확인해주세요");
+			myform.nickName.focus();
+			return false;
+		} else if(!regexPwd.test(pwd.trim())){
+			alert("비밀번호 형식을 확인해주세요\\n 가능한 특수문자는 ! @ # $ % & * 뿐입니다");
+			myform.pwd.focus();
+			return false;
+		} else if(!regexTel.test(tel.trim())){
+			alert("전화번호 형식을 확인해주세요");
+			myform.tel2.focus();
+			return false;
+		} else if(!regexEmail.test(email.trim())){
+			alert("이메일 형식을 확인해주세요");
+			myform.email1.focus();
+			return false;
+		}else {
 			myform.tel.value = tel;
 			myform.email.value = email;
 			myform.address2.value = address;
 			
+			swId = 0;
+			swNick = 0;
+			
 			myform.submit();
 		}
+	}
   	
   	// 아이디 중복 체크
-  	function idCheck() {
+  		function idCheck(flag) {
 			let mid = myform.mid.value;
+			let nickName = myform.nickName.value;
 			
-			if(mid.trim() == "") {
+			if(mid.trim() == "" && flag==1) {
 				alert("아이디를 입력하세요");
 				myform.mid.focus();
-			}
-			else {
+			}else if(mid.trim() != "" && flag==1 && regexId.test(mid.trim())) {
 				let url = "MemberIdCheck.mem?mid="+mid;
+				swId = 1;
 				window.open(url, "idCheckWindow", "width=400px, height=250px");
-				
+			}
+			
+			if(nickName.trim() == "" && flag==2) {
+				alert("닉네임을 입력하세요");
+				myform.nickName.focus();
+			}else if(nickName.trim() != "" && flag==2 && regexNick.test(mid.trim())) {
+				let url = "MemberIdCheck.mem?nickName="+nickName;
+				swNick = 1;
+				window.open(url, "idCheckWindow", "width=400px, height=250px");
 			}
 		}
-  	
+			
   	// 닉네임 중복 체크
   	/* function nickNameCheck() {
 			let nickName = myform.nickName.value;
@@ -107,7 +161,7 @@
 		  		<div class="input-group">
 			  		<input type="text" name="mid" id="mid" placeholder="아이디를 입력하세요" class="form-control" autofocus required />
 			  		<div class="input-group-append ml-1">
-			  			<input type="button" value="아이디중복체크" onclick="idCheck()" class="form-control btn-secondary" />
+			  			<input type="button" value="아이디중복체크" onclick="idCheck(1)" class="form-control btn-secondary" />
 			  		</div>
 		  		</div>
 		  	</td>
@@ -126,7 +180,7 @@
 	  			<div class="input-group">
 	  				<input type="text" name="nickName" id="nickName" placeholder="닉네임을 입력하세요" class="form-control" required />
 	  				<div class="input-group-append ml-1">
-			  			<input type="button" value="닉네임중복체크" onclick="nickNameCheck()" class="form-control btn-secondary" />
+			  			<input type="button" value="닉네임중복체크" onclick="idCheck(2)" class="form-control btn-secondary" />
 			  		</div>
 	  			</div>
 	  		</td>
@@ -162,16 +216,16 @@
 	  		<th class="text-center"><label for="address" class="form-label">주소</label></th>
 	  		<td colspan="7">
 	  			<div class="input-group mb-1">
-				  	<input type="text" name="postcode" id="sample6_postcode" placeholder="우편번호" class="form-control">
+				  	<input type="text" name="postcode" id="sample6_postcode" placeholder="우편번호" class="form-control" readonly />
 				  	<div class="input-group-append">
 							<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 					</div>
-					<input type="text" name="address" id="sample6_address" placeholder="주소" class="form-control mb-1">
+					<input type="text" name="address" id="sample6_address" placeholder="주소" class="form-control mb-1" readonly />
 					<div class="input-group mb-1">
-						<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소" class="form-control" >
+						<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소" class="form-control" />
 						<div class="input-group-append">
-							<input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" class="form-control" >
+							<input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" class="form-control" readonly />
 						</div>
 					</div>
 	  		</td>
