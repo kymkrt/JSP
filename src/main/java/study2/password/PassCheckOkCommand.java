@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import common.SecurityUtil;
 import study2.StudyInterface;
 
 public class PassCheckOkCommand implements StudyInterface {
@@ -28,6 +29,7 @@ public class PassCheckOkCommand implements StudyInterface {
 		
 		int salt = 0x1234ABCD;
 		int encPwd = 0, decPwd;
+		String strEncPwd = "";
 		
 		if(flag == 1) {
 			//salt 키 : 0x1234ABCD 16진수 이러면 연산가능 정수라서
@@ -45,14 +47,18 @@ public class PassCheckOkCommand implements StudyInterface {
 			System.out.println("복호화 비밀번호와 입력비밀번호가 같으면 로그인 Ok");
 			System.out.println("끝");
 			
-			
+			request.setAttribute("pwd", encPwd);
 		}
-		else if(flag==2) {
+		else if(flag==4) {
+			//SHA-256 사용
+			SecurityUtil security = new SecurityUtil();
 			
+			
+			strEncPwd = security.encryptSHA256(pwd);
+			request.setAttribute("pwd", strEncPwd);
 		}
 		
 		
-		request.setAttribute("pwd", encPwd);
 	}
 
 }

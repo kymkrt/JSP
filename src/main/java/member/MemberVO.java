@@ -4,7 +4,7 @@ public class MemberVO {
 	private int idx;
 	private String mid;
 	private String pwd;
-	private String nickNickname;
+	private String nickName;
 	private String name;
 	private String gender;
 	private String birthday;
@@ -21,7 +21,10 @@ public class MemberVO {
 	private int todayCnt;
 	private String startDate;
 	private String lastDate;
-	private String salt;
+	
+	
+	private String tempMid; //아이디 중복체크를 위한 임시 아이디. 추가된 필드
+	private String tempNickName; //아이디 중복체크를 위한 임시 아이디. 추가된 필드
 	
 	public int getIdx() {
 		return idx;
@@ -41,11 +44,11 @@ public class MemberVO {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
-	public String getNickNickname() {
-		return nickNickname;
+	public String getNickName() {
+		return nickName;
 	}
-	public void setNickNickname(String nickNickname) {
-		this.nickNickname = nickNickname;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 	public String getName() {
 		return name;
@@ -143,20 +146,27 @@ public class MemberVO {
 	public void setLastDate(String lastDate) {
 		this.lastDate = lastDate;
 	}
-	public String getSalt() {
-		return salt;
+	public String getTempMid() {
+		return tempMid;
 	}
-	public void setSalt(String salt) {
-		this.salt = salt;
+	public void setTempMid(String tempMid) {
+		this.tempMid = tempMid;
+	}
+	public String getTempNickName() {
+		return tempNickName;
+	}
+	public void setTempNickName(String tempNickName) {
+		this.tempNickName = tempNickName;
 	}
 	
+	//투스트링은 그냥 지우고 새로 만드는게 편하다
 	@Override
 	public String toString() {
-		return "MemberVO [idx=" + idx + ", mid=" + mid + ", pwd=" + pwd + ", nickNickname=" + nickNickname + ", name="
-				+ name + ", gender=" + gender + ", birthday=" + birthday + ", tel=" + tel + ", address=" + address + ", email="
-				+ email + ", content=" + content + ", photo=" + photo + ", level=" + level + ", userInfo=" + userInfo
-				+ ", userDel=" + userDel + ", point=" + point + ", visitCnt=" + visitCnt + ", todayCnt=" + todayCnt
-				+ ", startDate=" + startDate + ", lastDate=" + lastDate + ", salt=" + salt + "]";
+		return "MemberVO [idx=" + idx + ", mid=" + mid + ", pwd=" + pwd + ", nickName=" + nickName + ", name=" + name
+				+ ", gender=" + gender + ", birthday=" + birthday + ", tel=" + tel + ", address=" + address + ", email=" + email
+				+ ", content=" + content + ", photo=" + photo + ", level=" + level + ", userInfo=" + userInfo + ", userDel="
+				+ userDel + ", point=" + point + ", visitCnt=" + visitCnt + ", todayCnt=" + todayCnt + ", startDate="
+				+ startDate + ", lastDate=" + lastDate + ", tempMid=" + tempMid + ", tempNickName=" + tempNickName + "]";
 	}
 	
 }

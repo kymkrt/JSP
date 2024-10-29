@@ -38,6 +38,26 @@ public class MemberController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/memberMain.jsp"; //jsp니까 첫글자 소문자
 		}
+		else if(com.equals("/MemberJoin")) {//위에서 +1 안해서 여기 / 필요
+			viewPage += "/memberJoin.jsp"; //jsp니까 첫글자 소문자
+		}
+		else if(com.equals("/MemberJoinOk")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberJoinOkCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp"; //jsp니까 첫글자 소문자
+		}
+		else if(com.equals("/MemberIdCheck")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberIdCheckCommand();
+			command.execute(request, response);
+			//뷰화일이 되는것 아래 jsp가 그 작은 창에 뜬다
+			viewPage += "/memberIdCheck.jsp"; //jsp니까 첫글자 소문자
+		}
+		else if(com.equals("/MemberNickNameCheck")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberNickNameCheckCommand();
+			command.execute(request, response);
+			//뷰화일이 되는것 아래 jsp가 그 작은 창에 뜬다
+			viewPage += "/memberNickNameCheck.jsp"; //jsp니까 첫글자 소문자
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);

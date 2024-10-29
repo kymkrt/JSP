@@ -40,7 +40,7 @@
 	      <li class="nav-item">
 	    	 <div class="dropdown">
 			    	<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-							MyPage		    	
+							MyPage
 				   	</button>
 			    	<div class="dropdown-menu">
 				      <a class="dropdown-item" href="MemberMain.mem">회원메인방</a>
@@ -58,6 +58,10 @@
 	  	<!--c if 면 항상 배타적 추가 != 대신에 empty가 좋다 공백도 포함 -->
 	     <c:if test="${!empty sNickName}"><a class="nav-link" href="MemberLogout.mem">LogOut</a></c:if> <!--확장자 패턴이라 ctp 필요없음-->
 	     <c:if test="${empty sNickName}"><a class="nav-link" href="MemberLogin.mem">Login</a></c:if> <!--확장자 패턴이라 ctp 필요없음-->
+	    </li>          
+	  	<li class="nav-item">
+	  	<!--c if 면 항상 배타적 추가 != 대신에 empty가 좋다 공백도 포함 -->
+	    	<c:if test="${empty sNickName}"><a class="nav-link" href="MemberJoin.mem">Join</a></c:if><!--확장자 패턴이라 ctp 필요없음-->
 	    </li>          
     </ul>
   </div>

@@ -10,35 +10,37 @@
   <script type="text/javascript">
   	'use strict'
   	
-  	function fCheck(flag) {
-  		let tel1 = myform.tel1.value;
+  	function fCheck() {
+  		alert("asdfasdf");
+  		let tel = myform.tel1.value+"-"+myform.tel2.value+"-"myform.tel3.value;
+  		let email = myform.email1.value+"@"+myform.email2.value;
+  		
+  		/* 이렇게 해도됨
   		let tel2 = myform.tel2.value;
   		let tel3 = myform.tel3.value;
   		let email1 = myform.email1.value;
-  		let email2 = myform.email2.value;
+  		let email2 = myform.email2.value; */
   		
-  		//alert(tel1+tel2+tel3+email1+email2);
+  		//유효성검사(정규식으로 처리) 프론트체크는 requierd부분에서 반드시 처리
   		
-			if(flag == 1){
-				myform.tel.value= tel1+tel2+tel3;
-				myform.email.value= email1+'@'+email2;
-				return true;
-			}
-			else if(flag == 2){
-				location.href="${ctp}/Main";
-				return false;
-			}
+  		alert(tel +" : "+email);
+  		
+			//myform.action = "";
+			
+			myform.tel.value = tel;
+			myform.email.value = email;
+			myform.submit();
 		}
   </script>
   <style type="text/css">
   	th {
-		width: 150px; 
-		background-color: #eee;	
-		padding: 10px;
+			width: 150px; 
+			background-color: #eee;	
+			padding: 10px;
   	}
   	
   	#subject {
-		background-color: #eee;	
+			background-color: #eee;	
   	}
   </style>
 </head>
@@ -47,26 +49,26 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br /></p>
 <div class="container">
-  <form name="myform" id="myform" method="post" action="" onsubmit="return fCheck(1)">
+  <form name="myform" id="myform" method="post" action="MemberJoinOk.mem" onsubmit="return fCheck()">
 	<table class="table table-bordered">
 		<tr id="subject">
 			<td class="text-center" colspan="7"><b>회원가입</b></td>
 		</tr>
 	  	<tr>
 		  	<th class="text-center"><label for="mid" class="form-label">아이디</label></th>
-		  	<td colspan="7"><input type="text" name="mid" id="mid" value="" class="form-control" autofocus required /></td>
+		  	<td colspan="7"><input type="text" name="mid" id="mid" placeholder="아이디를 입력하세요" class="form-control" autofocus required /></td>
 	  	</tr>
 	  	<tr>
 		  	<th class="text-center"><label for="pwd" class="form-label">비밀번호</label></th>
-		  	<td colspan="7"><input type="password" name="pwd" id="pwd" value="" class="form-control" required /></td>
+		  	<td colspan="7"><input type="password" name="pwd" id="pwd" placeholder="비밀번호를 입력하세요" class="form-control" required /></td>
 	  	</tr>
 	  	<tr class="mb-2">
-		  	<th class="text-center"><label for="nickName" class="form-label">이름</label></th>
-	  		<td colspan="7"><input type="text" name="nickName" id="nickName" value="" class="form-control" required /></td>
+		  	<th class="text-center"><label for="name" class="form-label">성명</label></th>
+		  	<td colspan="7"><input type="text" name="name" id="name" placeholder="성명을 입력하세요" class="form-control" required /></td>
 	  	</tr>
 	  	<tr class="mb-2">
-		  	<th class="text-center"><label for="name" class="form-label">닉네임</label></th>
-		  	<td colspan="7"><input type="text" name="name" id="name" value="" class="form-control" required /></td>
+		  	<th class="text-center"><label for="nickName" class="form-label">닉네임</label></th>
+	  		<td colspan="7"><input type="text" name="nickName" id="nickName" placeholder="닉네임을 입력하세요" class="form-control" required /></td>
 	  	</tr>
 	  	<tr class="mb-2">
 	  		<th class="text-center">성별</th>
@@ -83,28 +85,16 @@
 	  		<th class="text-center"><label for="tel1" class="form-label">전화번호</label></th>
 	  		<td>
 	  		<select class="form-control" id="tel1" name="tel1">
-				  <option selected>지역번호</option>
-				  <option value="043">043</option>
-				  <option value="02">02</option>
-				  <option value="045">045</option>
+				  <option>010</option>
+				  <!--이런식으로 해도된다  -->
+				  <option value="02">서울</option>
+				  <option value="041">천안</option>
+				  <option value="042">대전</option>
+				  <option value="043">청주</option>
+				  <option value="031">인천</option>
 				</select>
-				</td>
-	  		<td><label for="tel2" class="form-label text-center"><b>-</b></label></td>
-	  		<td>
-	  		<select class="form-control" id="tel2" name="tel2" >
-				  <option selected>국번</option>
-				  <option value="123">123</option>
-				  <option value="456">456</option>
-				  <option value="789">789</option>
-				</select>
-				</td>
-	  		<td><label for="tel3" class="form-label text-center"><b>-</b></label></td>
-	  		<td><select class="form-control" id="tel3" name="tel3" >
-				  <option selected>전화번호</option>
-				  <option value="321">321</option>
-				  <option value="654">654</option>
-				  <option value="987">987</option>
-				</select>
+				-<input type="text" class="" id="tel2" name="tel2" >
+				-<input type="text" class="" id="tel3" name="tel3" />
 			</td>
 	  	</tr>
 	  	<tr class="mb-2">
@@ -132,18 +122,20 @@
 	  		<td colspan="7"><input type="file" name="photo" id="photo" class="form-control-file border" /></td>
 	  	</tr>
 	  	<tr class="mb-2">
-		  	<th class="text-center"><label for="photo" class="form-label">정보공개</label></th>
+		  	<th class="text-center"><label for="userInfor" class="form-label">정보공개</label></th>
 		  	<td colspan="7" class="text-center">
-		  		<input type="radio" name="userInfo" id="YES" value="공개" class="btn-check" /><label for="YES" class="form-label mr-3">공개</label>
-		  		<input type="radio" name="userInfo" id="NO" value="비공개" class="btn-check" checked /><label for="NO" class="form-label">비공개</label>
+		  		<input type="radio" name="userInfor" id="YES" value="공개" class="btn-check" /><label for="YES" class="form-label mr-3">공개</label>
+		  		<input type="radio" name="userInfor" id="NO" value="비공개" class="btn-check" checked /><label for="NO" class="form-label">비공개</label>
 		  	</td>
 	  	</tr>
   	</table>
   	<button type="submit" class="form-control btn btn-success mb-2">제출</button>
   	<button type="reset" class="form-control btn btn-warning mb-2">다시입력</button>
-  	<button type="button" onclick="fCheck(2)" class="form-control btn btn-info mb-2">돌아가기</button>
-  	<input type="hidden" name="tel" id="tel" value="" />
-  	<input type="hidden" name="email" id="email" value="" />
+  	<%-- <button type="button" onclick="location.href='${ctp}/'" class="form-control btn btn-info mb-2">돌아가기</button> --%>
+  	<!--히스토리백은 사용에 주의해야한다  -->
+  	<button type="button" onclick="history.back()" class="form-control btn btn-info mb-2">돌아가기</button>
+  	<input type="hidden" name="tel" id="tel" />
+  	<input type="hidden" name="email" id="email" />
   </form>
   <div name="demo" id="demo">
   </div>
