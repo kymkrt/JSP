@@ -245,4 +245,18 @@ public class MemberDAO {
 			return vos;
 		}
 
+		public int setMemberLevelUpdate(String mid) {
+			int res = 0;
+			try {
+				sql = "update member set level=level+1 where id = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, mid);
+				res = 1;
+				
+			} catch (Exception e) {
+				System.out.println("등업실패 "+e.getMessage());
+				res = 0;
+			}
+			return res;
+		}
 }

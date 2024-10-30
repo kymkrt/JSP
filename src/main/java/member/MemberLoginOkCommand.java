@@ -99,6 +99,9 @@ public class MemberLoginOkCommand implements MemberInterface {
 		//dao.setPointPlus(mid);
 		dao.setMemberInforUpdate(vo);
 		
+		if(vo.getVisitCnt() > 10 && vo.getLevel()==1) {
+			dao.setMemberLevelUpdate(mid);
+		}
 		
 		request.setAttribute("message", mid+"님 로그인 되었습니다"); //\를 제어 코드로 보기 때문에 \를 2개 써서 인식되도록한다
 		request.setAttribute("url", "MemberMain.mem");
