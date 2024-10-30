@@ -22,7 +22,7 @@
   	
   	const regexId = /^[a-zA-Z0-9]{2,20}$/; 
   	const regexNick = /^[a-zA-Z0-9가-힣]{2,20}$/; 
-  	const regexName = /^[가-힣]{2,10}$/; 
+  	const regexName = /^[가-힣a-zA-Z0-9]{2,10}$/; 
   	const regexPwd = /^[a-zA-Z0-9\!\@\#\$\%\&\*]{2,20}$/; 
   	const regexTel = /^[0-9]{2,3}\-{1}[0-9]{3,4}\-{1}[0-9]{3,4}$/; 
   	//const regexAddress = /^[0-9]{3,4}\-{1}[0-9]{3,4}$/; 
@@ -111,7 +111,7 @@
 			if(nickName.trim() == "" && flag==2) {
 				alert("닉네임을 입력하세요");
 				myform.nickName.focus();
-			}else if(nickName.trim() != "" && flag==2 && regexNick.test(mid.trim())) {
+			}else if(nickName.trim() != "" && flag==2 && regexNick.test(nickName.trim())) {
 				let url = "MemberIdCheck.mem?nickName="+nickName;
 				swNick = 1;
 				window.open(url, "idCheckWindow", "width=400px, height=250px");
@@ -132,6 +132,29 @@
 				
 			}
 		} */
+		
+		//닉네임 중복체크 (AJax처리)
+		function nickNameAjaxCheck() {
+			let nickName  = myform.nickName.value;
+			if(!regexNick.test(nickName)){
+				alert("닉네임은 2자리 이상 한글만 가능합니다");
+				myform.nickName.focus();
+				return false;
+			}
+			$.ajax({
+				type : "get", //여기get은 restAPI 개념이라 URL에 데이터 붙어가는거랑은 다르다
+				url : "NickNameAjaxCheck.mem",
+				//			변수명				자바스크립트변수
+				data : {nickName : nickName}, //제이슨 처리 할때는 키에 "" 꼭 붙여야한다 지금은 안붙여도 처리됨
+				success:function(res){
+					if(res != "0") alert("닉네임이 중복되었습니다.\n 다른 닉네임을 사용하세요");
+					else alert("사용하실수 있는 닉네임입니다\n 계속 작성해주세요")
+				},//명령어 이어질때는 무조건 , 
+				error : function() {
+					alert("전송오류");
+				}
+			});
+		}
   </script>
   <style type="text/css">
   	th {
@@ -180,7 +203,8 @@
 	  			<div class="input-group">
 	  				<input type="text" name="nickName" id="nickName" placeholder="닉네임을 입력하세요" class="form-control" required />
 	  				<div class="input-group-append ml-1">
-			  			<input type="button" value="닉네임중복체크" onclick="idCheck(2)" class="form-control btn-secondary" />
+			  			<!-- <input type="button" value="닉네임중복체크" onclick="idCheck(2)" class="form-control btn-secondary" /> -->
+			  			<input type="button" value="닉네임중복체크" onclick="nickNameAjaxCheck()" class="form-control btn-secondary" />
 			  		</div>
 	  			</div>
 	  		</td>
@@ -216,7 +240,8 @@
 	  		<th class="text-center"><label for="address" class="form-label">주소</label></th>
 	  		<td colspan="7">
 	  			<div class="input-group mb-1">
-				  	<input type="text" name="postcode" id="sample6_postcode" placeholder="우편번호" class="form-control" readonly />
+	  			<!--readonly 에 onclick="sample6_execDaumPostcode()" 이렇게 넣어줄수 있음  -->
+				  	<input type="text" name="postcode" id="sample6_postcode" onclick="sample6_execDaumPostcode()" placeholder="우편번호" class="form-control" readonly />
 				  	<div class="input-group-append">
 							<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>

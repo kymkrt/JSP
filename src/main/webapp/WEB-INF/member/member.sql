@@ -1,6 +1,7 @@
 show tables; /*연결됐는지 확인*/
 /*미리 이렇게 핵심(기초데이터)를 만들어 두고 나중에 확장한다 다른애들이 이 테이블을 참조 그래서 얘는 중복되면 안됨 */
 /*얘는 그래서 */
+
 create table member (
 	idx int not null auto_increment, /*회원 고유 번호*/
 	/*()숫자 넘으면 오류*/
@@ -27,9 +28,13 @@ create table member (
 	primary key(idx), /*이렇게 미래 해두면 좋다*/
 	unique key(mid)
 );
+
 desc member;
 drop table member;
 /*values는 다 써야한다*/
 insert into member values (default, 'admin', 'asdf1234', '관리맨', '관리자', '남자', default, '010-5165-3650', '28575 충북 청주시 서원구 사직대로 109, 4층', 'wh40k@naver.com', '관리자입니다', default, default, default, default, default, default, default, default);
 select * from member;
+
+select max(point) as point, mid, name from member;
+
 delete from member where name = '관리자';
