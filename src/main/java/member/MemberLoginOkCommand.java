@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.mysql.fabric.xmlrpc.base.Data;
 
 import common.SecurityUtil;
+import guest.GuestDAO;
 
 public class MemberLoginOkCommand implements MemberInterface {
 
@@ -26,6 +27,12 @@ public class MemberLoginOkCommand implements MemberInterface {
 		MemberDAO dao = new MemberDAO();
 		
 		MemberVO vo=dao.getMemberIdCheck(mid); //원래는 pwd도 넘기지만 지금은 salt를 쓰기 때문에 id만 넘김
+		
+		if(vo.getMid() == null) {
+			request.setAttribute("message", "회원정보가 없습니다 \\n 확인하고 다시 로그인해주세요");
+			request.setAttribute("url", "MemberLogin.mem");
+			return;
+		}
 		
 		//저장된 비밀번호에서 salt키를 분리시켜서 다시 암호화후 비교처리해야한다 
 		String salt = vo.getPwd().substring(0,3);
@@ -69,13 +76,15 @@ public class MemberLoginOkCommand implements MemberInterface {
 		//최근 방문일을 세션에 담아둔다(쿠키도 가능) 리퀘스트에 담으면 매번 가지고 다녀야해서 불편하다
 		session.setAttribute("sLastDate", vo.getLastDate());
 		
-		//회원등급별 등급명칭을 strLevel 변수에 저장한다 
-		String strLevel = "";
-		if(vo.getLevel() == 0) strLevel = "관리자";
-		else if(vo.getLevel() == 1) strLevel = "준회원";
-		else if(vo.getLevel() == 2) strLevel = "정회원";
-		else if(vo.getLevel() == 3) strLevel = "우수회원";
+		//회원등급별 등급명칭을 strLevel 변수에 저장한다 (자동등업처리에 써야 해서 메소드로 만들었다)
+		/*
+		 * String strLevel = ""; if(vo.getLevel() == 0) strLevel = "관리자"; else
+		 * if(vo.getLevel() == 1) strLevel = "준회원"; else if(vo.getLevel() == 2) strLevel
+		 * = "정회원"; else if(vo.getLevel() == 3) strLevel = "우수회원";
+		 */
 		
+		//회원등급별 등급명칭을 strLevel 변수에 저장한다 (자동등업처리에 써야 해서 메소드로 만들었다)
+		String strLevel = strLevelProcess(vo.getLevel());
 		session.setAttribute("strLevel", strLevel);
 		
 		//방문포인트 10증가, 방문카운트(총/오늘) 1증가, 마지막날짜(최종방문일자) 수정.  준회원은 따로 만드는게 편함
@@ -99,15 +108,42 @@ public class MemberLoginOkCommand implements MemberInterface {
 		//dao.setPointPlus(mid);
 		dao.setMemberInforUpdate(vo);
 		
-		if(vo.getVisitCnt() > 10 && vo.getLevel()==1) {
-			dao.setMemberLevelUpdate(mid);
+		// 준회원인경우 정회원으로 자동등업처리(조건:총방문회수 10회이상, 방명록글수 2개이상)
+		int levelSw = 0;
+		if(vo.getLevel() == 1) {
+			GuestDAO gDao = new GuestDAO();
+			vo = dao.getMemberIdCheck(mid);
+			if(vo.getVisitCnt() >= 10 && gDao.getGuestCnt(mid, vo.getName(), vo.getNickName()) >= 2) {
+				dao.setMemberLevelUpdate(vo.getIdx(), 2);
+				session.setAttribute("sLevel", 2);
+				session.setAttribute("strLevel", strLevelProcess(2));
+				levelSw = 1;
+			}
 		}
+		//스위치를 써서 자동등업이 됐을때 딱 한번만 등급업 메세지를 띄운것
+		if(levelSw != 0) request.setAttribute("message", mid + "님 축하합니다.\\n정회원이 되셨습니다.");
+		else request.setAttribute("message", mid + "님 로그인 되었습니다.");
+		
+		
+//		if(vo.getVisitCnt() > 10 && vo.getLevel()==1) {
+//			dao.setMemberLevelUpdate(mid);
+//		}
 		
 		request.setAttribute("message", mid+"님 로그인 되었습니다"); //\를 제어 코드로 보기 때문에 \를 2개 써서 인식되도록한다
 		request.setAttribute("url", "MemberMain.mem");
 		
 		
 		
+	}
+
+	//회원등급별 등급명칭을 strLevel 변수에 저장한다 (자동등업처리에 써야 해서 메소드로 만들었다)
+	private String strLevelProcess(int level) {
+		String strLevel = ""; 
+		if(level == 0) strLevel = "관리자"; 
+		else if(level == 1) strLevel = "준회원"; 
+		else if(level == 2) strLevel = "정회원"; 
+		else if(level == 3) strLevel = "우수회원";
+		return strLevel;
 	}
 
 }

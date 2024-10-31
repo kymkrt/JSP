@@ -21,6 +21,8 @@ public class MemberController extends HttpServlet{
 		String com = request.getRequestURI();
 		com = com.substring(com.lastIndexOf("/"), com.lastIndexOf("."));
 		
+		//이렇게 컨트롤러가 많아져서 인터페이스를 만드는것
+		
 		//공통코드 공통관심사
 	// 인증처리 (spring에서는 AOP의 개념)
 		//이렇게 해주면 여길 지나는 스터디 컨트롤러는 모두 걸리게 된다
@@ -78,15 +80,47 @@ public class MemberController extends HttpServlet{
 			command.execute(request, response);
 			viewPage += "/memberMain.jsp"; //jsp니까 첫글자 소문자
 		}
-		else if(com.equals("/MemberMain")) {//위에서 +1 안해서 여기 / 필요
-			command = new MemberMainCommand();
-			command.execute(request, response);
-			viewPage += "/memberMain.jsp"; //jsp니까 첫글자 소문자
-		}
 		else if(com.equals("/MemberList")) {//위에서 +1 안해서 여기 / 필요
 			command = new MemberListCommand();
 			command.execute(request, response);
 			viewPage += "/memberList.jsp"; //jsp니까 첫글자 소문자
+		}
+		else if(com.equals("/MemberPasswordCheck")) {//위에서 +1 안해서 여기 / 필요
+			viewPage += "/memberPasswordCheck.jsp"; //jsp니까 첫글자 소문자
+		}
+		else if(com.equals("/MemberPwdCheckOk")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberPwdCheckOkCommand();
+			command.execute(request, response);
+			viewPage ="/include/message.jsp";  
+		}
+		else if(com.equals("/MemberUpdate")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberUpdateCommand();
+			command.execute(request, response);
+			viewPage += "/memberUpdate.jsp";  //jsp니까 첫글자 소문자
+		}
+		else if(com.equals("/MemberUpdateOk")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberUpdateOkCommand();
+			command.execute(request, response);
+			viewPage ="/include/message.jsp";  
+		}
+		else if(com.equals("/MemberPwdCheckAjax")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberPwdCheckAjaxCommand();
+			command.execute(request, response);
+			//ajax 처리라 뷰페이지 필요없음
+			return;
+		}
+		else if(com.equals("/MemberPwdCheckAjaxOk")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberPwdCheckAjaxOkCommand();
+			command.execute(request, response);
+			viewPage ="/include/message.jsp";  
+		}
+		else if(com.equals("/MemberPwdDeleteCheck")) {//위에서 +1 안해서 여기 / 필요
+			viewPage +="/memberPwdDeleteCheck.jsp";  
+		}
+		else if(com.equals("/MemberDeleteCheckOk")) {//위에서 +1 안해서 여기 / 필요
+			command = new MemberDeleteCheckOkCommand();
+			command.execute(request, response);
+			viewPage ="/include/message.jsp";  
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

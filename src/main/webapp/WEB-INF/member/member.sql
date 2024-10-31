@@ -37,4 +37,4 @@ select * from member;
 
 select max(point) as point, mid, name from member;
 
-delete from member where name = '관리자';
+delete from member where name = '김초키';
