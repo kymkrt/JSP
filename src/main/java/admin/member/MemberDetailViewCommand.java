@@ -19,6 +19,21 @@ public class MemberDetailViewCommand implements AdminInterface {
 		
 		MemberDAO dao = new MemberDAO();
 		MemberVO vo = dao.getMemberIdxCheck(idx);
+		//vo에서의 등급 처리
+		
+		
+		//서블릿에서의 등급 처리 
+		String strLevel = "";
+		if(vo.getLevel() == 0) strLevel = "관리자";
+		else if(vo.getLevel() == 1) strLevel = "준회원";
+		else if(vo.getLevel() == 2) strLevel = "정회원";
+		else if(vo.getLevel() == 3) strLevel = "우수회원";
+		else if(vo.getLevel() == 99) strLevel = "탈퇴신청회원";
+		
+		vo.setStrLevel(strLevel);
+		
+		//request.setAttribute("strLevel", strLevel);
+		
 		
 		request.setAttribute("vo", vo);
 	}

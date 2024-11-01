@@ -22,7 +22,7 @@ public class MemberListCommand implements MemberInterface {
 		int pageSize = request.getParameter("pageSize")==null ? 5 : Integer.parseInt(request.getParameter("pageSize"));
 		
 		//3. 총 레코드 건수를 구한다 (totRecCnt) - sql 명령어 중에서 count함수 이용
-		int totRecCnt = dao.getTotRecCnt();
+		int totRecCnt = dao.getTotRecCnt(999);
 		
 		//4. 총 페이지 건수를 구한다(totPage) 딱떨어지면 그냥 쓰고 아니면 1더해주기
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
@@ -37,7 +37,7 @@ public class MemberListCommand implements MemberInterface {
 		
 		//ArrayList<E> = dao.getGuestList();
 		//60퍼는 그냥 List쓴다
-		ArrayList<MemberVO> vos = dao.getMemberList(startIndexNo, pageSize);
+		ArrayList<MemberVO> vos = dao.getMemberList(startIndexNo, pageSize, 999);
 		
 		//블럭페이징처리 (시작블록을 0으로 처리 1로하는곳도 많음)
 		//이 3가지는 그냥 공식처럼 생각하면 된다 이거 말고도 알고리즘은 많음

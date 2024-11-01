@@ -22,9 +22,11 @@ public class MemberVO {
 	private String startDate;
 	private String lastDate;
 	
-	
+	//테이블에 정의하지 않은 필드  VO에 추가하고 게터세터와 toString까지 다시 올려야 사용할 준비가 된다
 	private String tempMid; //아이디 중복체크를 위한 임시 아이디. 추가된 필드
 	private String tempNickName; //아이디 중복체크를 위한 임시 아이디. 추가된 필드
+	private int elapsed_date; //최종접속 경과일(탈퇴시 사용) 숫자로 반환 추가된 필드
+	private String strLevel; //회원 등급명 추가된 필드
 	
 	public int getIdx() {
 		return idx;
@@ -158,6 +160,18 @@ public class MemberVO {
 	public void setTempNickName(String tempNickName) {
 		this.tempNickName = tempNickName;
 	}
+	public int getElapsed_date() {
+		return elapsed_date;
+	}
+	public void setElapsed_date(int elapsed_date) {
+		this.elapsed_date = elapsed_date;
+	}
+	public String getStrLevel() {
+		return strLevel;
+	}
+	public void setStrLevel(String strLevel) {
+		this.strLevel = strLevel;
+	}
 	
 	//투스트링은 그냥 지우고 새로 만드는게 편하다
 	@Override
@@ -166,7 +180,7 @@ public class MemberVO {
 				+ ", gender=" + gender + ", birthday=" + birthday + ", tel=" + tel + ", address=" + address + ", email=" + email
 				+ ", content=" + content + ", photo=" + photo + ", level=" + level + ", userInfo=" + userInfo + ", userDel="
 				+ userDel + ", point=" + point + ", visitCnt=" + visitCnt + ", todayCnt=" + todayCnt + ", startDate="
-				+ startDate + ", lastDate=" + lastDate + ", tempMid=" + tempMid + ", tempNickName=" + tempNickName + "]";
+				+ startDate + ", lastDate=" + lastDate + ", tempMid=" + tempMid + ", tempNickName=" + tempNickName
+				+ ", elapsed_date=" + elapsed_date + ", strLevel=" + strLevel + "]";
 	}
-	
 }

@@ -16,7 +16,7 @@
 <div class="container">
   <h2>회 원 전 용 방</h2>
   <hr/>
-  <div>현재 <font color="blue"><b>${sNickName}(<font color="red">${strLevel}</font>)</b></font>님 로그인 중입니다.</div>
+  <div>현재 <font color="blue"><b>${sNickName}(<font color="red">${sStrLevel}</font>)</b></font>님 로그인 중입니다.</div>
   <hr/>
   <c:if test="${sLevel == 1}">
   	<div><font color="red">정회원 등업조건 : <u>총 방문횟수 <b>10회</b>이상</u>, <u>방명록에 글쓰기 <b>2회</b> 이상</u></font></div>

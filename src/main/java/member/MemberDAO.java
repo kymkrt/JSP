@@ -205,14 +205,25 @@ public class MemberDAO {
 		}
 		
 		//전체 회원 리스트 처리
-		public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize) {
+		public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 			ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 			try {
-				sql = "select * from member order by idx desc limit ?,?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setInt(1, startIndexNo);
-				pstmt.setInt(2, pageSize);
+				if(level == 999) {
+					sql = "select * , datediff(now(),lastDate) as elapsed_date from member order by idx desc limit ?,?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, startIndexNo);
+					pstmt.setInt(2, pageSize);
+				}
+				else {
+					sql = "select * , datediff(now(),lastDate) as elapsed_date from member where level=? order by idx desc limit ?,?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, level);
+					pstmt.setInt(2, startIndexNo);
+					pstmt.setInt(3, pageSize);
+				}
+				
 				rs = pstmt.executeQuery();
+				
 				while (rs.next()) {
 					MemberVO vo = new MemberVO();
 					vo.setIdx(rs.getInt("idx"));
@@ -235,6 +246,7 @@ public class MemberDAO {
 					vo.setTodayCnt(rs.getInt("todayCnt"));
 					vo.setStartDate(rs.getString("startDate"));
 					vo.setLastDate(rs.getString("lastDate"));
+					vo.setElapsed_date(rs.getInt("elapsed_date"));
 					
 					vos.add(vo);
 				}
@@ -343,11 +355,18 @@ public class MemberDAO {
 		}
 
 		//회원의 총인원수 구하기
-		public int getTotRecCnt() {
+		public int getTotRecCnt(int level) {
 			int totRecCnt = 0; //그냥 res 써도됨
 			try {
-				sql = "select count(idx) as totRecCnt from member";//as 뒤는 변수명이라 마음대로 줘도 됨
-				pstmt = conn.prepareStatement(sql);
+				if(level == 999) {
+					sql = "select count(idx) as totRecCnt from member";//as 뒤는 변수명이라 마음대로 줘도 됨
+					pstmt = conn.prepareStatement(sql);
+				}
+				else {
+					sql = "select count(idx) as totRecCnt from member where level=?";//as 뒤는 변수명이라 마음대로 줘도 됨
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, level);
+				}
 				rs = pstmt.executeQuery();
 				
 				rs.next();

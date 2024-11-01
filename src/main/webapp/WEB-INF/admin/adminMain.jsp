@@ -10,7 +10,7 @@
   	<frame src="AdminLeft.ad" name="adminLeft" frameborder="0" />
   	<frame src="AdminContent.ad" name="adminContent" frameborder="0" />
   </frameset>
-</head>
+</head>	
 <body>
 
 </body>

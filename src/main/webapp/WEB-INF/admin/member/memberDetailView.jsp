@@ -9,8 +9,6 @@
   <jsp:include page="/include/bs4.jsp" />
 </head>
 <body>
-<jsp:include page="/include/header.jsp" />
-<jsp:include page="/include/nav.jsp" />
 <p><br /></p>
 <div class="container">
   <h2>회원 정보 상세 보기</h2>
@@ -27,7 +25,7 @@
   <div>자기소개 : ${vo.content}</div>
   <div>정보공개 : ${vo.userInfo}</div>
   <div>탈퇴신청여부 : ${vo.userDel}</div>
-  <div>레벨 : ${vo.level}</div>
+  <div>등급 : ${vo.level} / ${vo.strLevel}</div>
   <div>포인트 : ${vo.point}</div>
   <div>총방문횟수 : ${vo.visitCnt}</div>
   <div>오늘방문횟수 : ${vo.todayCnt}</div>
@@ -38,6 +36,5 @@
   <div><button onclick="history.back()">돌아가기</button></div>
 </div>
 <p><br /></p>
-<jsp:include page="/include/footer.jsp" />
 </body>
 </html>
