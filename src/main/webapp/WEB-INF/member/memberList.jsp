@@ -1,48 +1,110 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<c:set var="ctp" value="${pageContext.request.contextPath}" />
+<c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>memberList.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
+  <style>
+    th, td {
+      text-align: center;
+    }
+  </style>
+  <script>
+    'use strict';
+    
+    function contentView(content) {
+    	$("#myModal #modalContent").text(content);
+    }
+  </script>
 </head>
 <body>
 <jsp:include page="/include/header.jsp" />
 <jsp:include page="/include/nav.jsp" />
-<p><br /></p>
+<p><br/></p>
 <div class="container">
   <h2 class="text-center">회 원 리 스 트</h2>
+  <table class="table table-hover">
+    <tr class="table-secondary">
+      <th>번호</th>
+      <th>닉네임</th>
+      <th>아이디</th>
+      <th>성명</th>
+      <th>성별</th>
+      <th>생일</th>
+      <th>이메일</th>
+      <th>최종방문일</th>
+    </tr>
+	  <c:forEach var="vo" items="${vos}" varStatus="st">
+	    <tr>
+	      <td>${st.count}</td>
+	      <td>${vo.nickName}</td>
+	      <c:if test="${vo.userInfo == '공개'}">
+	      <!--여러줄 즉 엔터가 있으면 내용이 안나옴 자바스크립트랑 충돌나는듯?  -->
+		      <td><a href="#" onclick="contentView('${vo.content}')" data-toggle="modal" data-target="#myModal">${vo.mid}</a></td>
+		      <%-- <td><a href="#" onclick="contentView('내용이 출력됩니다.')" data-toggle="modal" data-target="#myModal">${vo.mid}</a></td> --%>
+		      <td>${vo.name}</td>
+		      <td>${vo.gender}</td>
+		      <td>${fn:substring(vo.birthday,0,10)}</td>
+		      <td>${vo.email}</td>
+		      <td>
+		        <c:if test="${sMid == vo.mid}">${fn:substring(sLastDate,0,16)}</c:if>
+		        <c:if test="${sMid != vo.mid}">${fn:substring(vo.lastDate,0,16)}</c:if>
+		      </td>
+	      </c:if>
+	      <c:if test="${vo.userInfo != '공개'}">
+	        <td colspan="6" class="text-center">비 공 개</td>
+	      </c:if>
+	    </tr>
+  	</c:forEach>
+  	<tr><td colspan="8" class="m-0 p-0"></td></tr>
+  </table>
   
-  <c:forEach var="vo" items="${vos}" varStatus="st">
-  	<span class="mr-2">
-	  	<span class="card w-auto h-auto" style="width: 18rem;">
-	  	<h5 class="card-header">${st.count} / ${vo.name}</h5>
-	  	 	<span class="card-body">
-		  		<h5 class="card-title">닉네임 : ${vo.nickName}</h5>
-		  		<p class="card-text">공개여부 : ${vo.userInfo}</p>
-		  		<c:if test="${vo.userInfo == '공개'}">
-			  		<p class="card-text">성별 : ${vo.gender}</p>
-			  		<p class="card-text">생일 : ${vo.birthday}</p>
-			  		<p class="card-text">전화번호 : ${vo.tel}</p>
-			  		<p class="card-text">주소 : ${vo.address}</p>
-			  		<p class="card-text">이메일 : ${vo.email}</p>
-			  		<p class="card-text">자기소개 : ${vo.content}</p>
-			  		<c:if test="${sMid == vo.mid}"><p class="card-text">마지막 접속일 : ${fn:substring(sLastDate,0,16)}</p></c:if>
-			  		<!--배타적 조건  -->
-			  		<c:if test="${sMid != vo.mid}"><p class="card-text">마지막 접속일 : ${fn:substring(vo.lastDate,0,16)}</p></c:if>
-		  		</c:if>
-		  		<c:if test="${vo.userInfo == '비공개'}">
-		  			<p class="card-text">비공개</p>
-		  		</c:if>
-	  		</span>
-	  	</span>
-  	</span>
-  </c:forEach>
+<!-- 블록페이지 시작 -->
+<div class="text-center">
+  <ul class="pagination justify-content-center">
+	  <c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.mem?pag=1&pageSize=${pageSize}">첫페이지</a></li></c:if>
+	  <c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.mem?pag=${(curBlock-1)*blockSize + 1}&pageSize=${pageSize}">이전블록</a></li></c:if>
+	  <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
+	    <c:if test="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="MemberList.mem?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+	    <c:if test="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.mem?pag=${i}&pageSize=${pageSize}">${i}</a></li></c:if>
+	  </c:forEach>
+	  <c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.mem?pag=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}">다음블록</a></li></c:if>
+	  <c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.mem?pag=${totPage}&pageSize=${pageSize}">마지막페이지</a></li></c:if>
+  </ul>
 </div>
-<p><br /></p>
+<!-- 블록페이지 끝 -->
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3 class="modal-title">자기소개</h3>
+        <button type="button" class="close" data-dismiss="modal">×</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <span id="modalContent">${vo.content}</span>
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+<p><br/></p>
 <jsp:include page="/include/footer.jsp" />
 </body>
 </html>

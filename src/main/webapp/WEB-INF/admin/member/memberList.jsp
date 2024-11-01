@@ -9,6 +9,9 @@
   <title>memberList.jsp(admin)</title>
   <jsp:include page="/include/bs4.jsp" />
   <style>
+  body {
+  	font-size : 0.9em;
+  }
     th, td {
       text-align: center;
     }
@@ -69,7 +72,7 @@
 	    <tr <c:if test="${vo.userInfo != '공개'}"> style="background-color:#fcc" </c:if>>
 	      <td>${st.count}</td>
 	      <td>${vo.nickName}</td>
-		      <td>${vo.mid}</td>
+		      <td><a href="MemberDetailView.ad?idx=${vo.idx}">${vo.mid}</a></td>
 		      <td>${vo.name}</td>
 		      <td>${vo.gender}</td>
 		      <td>${fn:substring(vo.birthday,0,10)}</td>
@@ -93,8 +96,23 @@
 	      </td>
 	    </tr>
   	</c:forEach>
-  	<tr><td colspan="8" class="m-0 p-0"></td></tr>
+  	<tr><td colspan="10" class="m-0 p-0"></td></tr>
   </table>
+  
+  <!-- 블록페이지 시작-->
+  <div class="text-center">
+  <!-- []은 구별용으로 해둔것 나중에 꾸미면 좋다 -->
+  	<c:if test="${pag > 1}">[<a href="?pag=1">첫페이지</a>]</c:if>
+  	<c:if test="${curBlock > 0}">[<a href="MemberList.ad?pag=${(curBlock - 1)*blockSize + 1}">이전 블록</a>]</c:if>
+  	<c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize)+blockSize}" varStatus="st">
+  		<c:if test="${i <= totPage && i == pag}">[<a href="MemberList.ad?pag=${i}"><font color="red"><b>${i}</b></font></a>]</c:if>
+  	<!--배타적으로 해야한다  -->
+  		<c:if test="${i <= totPage && i != pag}">[<a href="MemberList.ad?pag=${i}">${i}</a>]</c:if>
+  	</c:forEach>
+  	<c:if test="${curBlock < lastBlock}">[<a href="MemberList.ad?pag=${(curBlock + 1)*blockSize + 1}">다음 블록</a>]</c:if>
+  	<c:if test="${pag < totPage}">[<a href="MemberList.ad?pag=${totPage}">마지막페이지</a>]</c:if>
+  </div>
+  <!-- 블록페이지 끝 -->
 </div>
 <p><br/></p>
 </body>

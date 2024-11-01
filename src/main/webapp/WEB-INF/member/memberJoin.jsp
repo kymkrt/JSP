@@ -147,8 +147,8 @@
 				//			변수명				자바스크립트변수
 				data : {nickName : nickName}, //제이슨 처리 할때는 키에 "" 꼭 붙여야한다 지금은 안붙여도 처리됨
 				success:function(res){
-					if(res != "0") alert("닉네임이 중복되었습니다.\n 다른 닉네임을 사용하세요");
-					else alert("사용하실수 있는 닉네임입니다\n 계속 작성해주세요")
+					if(res != "0") alert("닉네임이 중복되었습니다.\n 다른 닉네임을 사용하세요 "+ res);
+					else alert("사용하실수 있는 닉네임입니다\n 계속 작성해주세요" + res)
 				},//명령어 이어질때는 무조건 , 
 				error : function() {
 					alert("전송오류");

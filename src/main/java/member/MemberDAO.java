@@ -205,11 +205,13 @@ public class MemberDAO {
 		}
 		
 		//전체 회원 리스트 처리
-		public ArrayList<MemberVO> getMemberList() {
+		public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize) {
 			ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 			try {
-				sql = "select * from member order by idx desc";
+				sql = "select * from member order by idx desc limit ?,?";
 				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
 					MemberVO vo = new MemberVO();
@@ -338,6 +340,64 @@ public class MemberDAO {
 				pstmtClose();
 			}
 			return res;
+		}
+
+		//회원의 총인원수 구하기
+		public int getTotRecCnt() {
+			int totRecCnt = 0; //그냥 res 써도됨
+			try {
+				sql = "select count(idx) as totRecCnt from member";//as 뒤는 변수명이라 마음대로 줘도 됨
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				totRecCnt = rs.getInt("totRecCnt");
+			} catch (Exception e) {
+				System.out.println("sql오류(setMemberLevelChange) "+e.getMessage());
+			}finally {
+				rsClose();
+			}
+			return totRecCnt;
+		}
+		
+		//회원 상세정보 가져오기
+		public MemberVO getMemberIdxCheck(int idx) {
+			MemberVO vo = new MemberVO();
+			try { //홍장군_nickName
+				sql = "select * from member where idx = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, idx);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) { //동명이인 허용안해서 1건이라 if
+					vo.setIdx(rs.getInt("idx"));
+					vo.setMid(rs.getString("mid"));
+					vo.setPwd(rs.getString("pwd"));
+					vo.setNickName(rs.getString("nickName"));
+					vo.setName(rs.getString("name"));
+					vo.setGender(rs.getString("gender"));
+					vo.setBirthday(rs.getString("birthday"));
+					vo.setTel(rs.getString("tel"));
+					vo.setAddress(rs.getString("address"));
+					vo.setEmail(rs.getString("email"));
+					vo.setContent(rs.getString("content"));
+					vo.setPhoto(rs.getString("photo"));
+					vo.setLevel(rs.getInt("level"));
+					vo.setUserInfo(rs.getString("userInfo"));
+					vo.setUserDel(rs.getString("userDel"));
+					vo.setPoint(rs.getInt("point"));
+					vo.setVisitCnt(rs.getInt("visitCnt"));
+					vo.setTodayCnt(rs.getInt("todayCnt"));
+					vo.setStartDate(rs.getString("startDate"));
+					vo.setLastDate(rs.getString("lastDate"));
+					//vo.setSalt(rs.getString("salt"));
+				}
+			} catch (SQLException e) {
+				System.out.println("sql오류 "+e.getMessage());
+			} finally {
+				rsClose();
+			}
+			return vo;
 		}
 
 }

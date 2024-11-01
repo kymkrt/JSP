@@ -64,11 +64,11 @@ public class MemberController extends HttpServlet{
 			//뷰파일이 되는것 아래 jsp가 그 작은 창에 뜬다
 			viewPage += "/memberNickNameCheck.jsp"; //jsp니까 첫글자 소문자
 		}
-		else if(com.equals("/NickNameAjaxCheck")) {//위에서 +1 안해서 여기 / 필요
-			command = new NickNameAjaxCheckCommand();
-			command.execute(request, response);
-			return; //이건 뷰페이지 없음 그래서 return 처리
-		}
+//		else if(com.equals("/NickNameAjaxCheck")) {//위에서 +1 안해서 여기 / 필요
+//			command = new NickNameAjaxCheckCommand();
+//			command.execute(request, response);
+//			return; //이건 뷰페이지 없음 그래서 return 처리
+//		}
 		//위아래 로그인이 필요없는거는 체크 없이 할수 있도록 나눈다 이거 이후로는 전부 체크되는것
 		else if(level>4) { 
 		  request.setAttribute("message", "로그인 후 사용하세요");
