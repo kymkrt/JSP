@@ -61,6 +61,22 @@
 			let pageSize = document.getElementById("pageSize").value;
 			location.href="MemberList.ad?pageSize="+pageSize+"&pag=${pag}&level=${level}";			
 		}
+  	//선택 회원 등급 변경
+  	function levelAllChange() {
+  		let checked = document.getElementsByName("levelChangeSelect");
+		location.href = "";
+  		
+	}
+  	
+  	//전체 선택
+  	function selectAll() {
+  		let checked = document.getElementsByName("levelChangeSelect");
+  		let checkedAll = document.getElementById("selectAll");
+  		
+  		for(let checkTemp of checked){
+  			checkTemp.checked = checkedAll.checked;
+  		}
+	}
   </script>
 </head>
 <body>
@@ -69,6 +85,16 @@
   <h2 class="text-center">회 원 리 스 트</h2>
   <table class="table table-borderless">
   	<tr>
+  		<td class="text-left">전체 등급 변경
+  			<select name="levelAllChange" id="levelAllChange" onchange="levelAllChange()"><!--온체인지 아니면 버튼 또 눌러야 됨  -->
+  				<option value="" <c:if test="${empty level}">selected</c:if> >전체회원</option><!--이미 보는 페이지니까 비워서 넘어온값이 없으면 전체회원으로 만들기  -->
+  				<option value="1" <c:if test="${level==1}">selected</c:if> >준회원</option>
+  				<option value="2" <c:if test="${level==2}">selected</c:if> >정회원</option>
+  				<option value="3" <c:if test="${level==3}">selected</c:if> >우수회원</option>
+  				<option value="0" <c:if test="${level==0}">selected</c:if> >관리자</option>
+  				<option value="99" <c:if test="${level==99}">selected</c:if> >탈퇴신청회원</option>
+  			</select>
+  		</td>
   		<td class="text-right">등급별조회
   			<select name="levelView" id="levelView" onchange="levelViewCheck()"><!--온체인지 아니면 버튼 또 눌러야 됨  -->
   				<option value="" <c:if test="${empty level}">selected</c:if> >전체회원</option><!--이미 보는 페이지니까 비워서 넘어온값이 없으면 전체회원으로 만들기  -->
@@ -83,6 +109,9 @@
   </table>
   <table class="table table-hover">
     <tr class="table-secondary">
+      <th>
+	      <input type="checkbox" name="selectAll" id="selectAll" onclick="selectAll()"  />
+      </th>
       <th>번호</th>
       <th>닉네임</th>
       <th>아이디</th>
@@ -94,8 +123,12 @@
       <th>활동여부</th>
       <th>현재레벨</th>
     </tr>
+    
 	  <c:forEach var="vo" items="${vos}" varStatus="st">
 	    <tr <c:if test="${vo.userInfo != '공개'}"> style="background-color:#fcc" </c:if>>
+	      <td>
+	      	<input type="checkbox" name="levelChangeSelect" id="levelChangeSelect" value="${vo.idx}"/>
+	      </td>
 	      <td>${st.count}</td>
 	      <td>${vo.nickName}</td>
 		      <td><a href="MemberDetailView.ad?idx=${vo.idx}">${vo.mid}</a></td>
