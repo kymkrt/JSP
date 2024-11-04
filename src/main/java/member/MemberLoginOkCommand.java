@@ -39,9 +39,6 @@ public class MemberLoginOkCommand implements MemberInterface {
 		
 		SecurityUtil security = new SecurityUtil();
 		pwd = security.encryptSHA256(salt+pwd);
-		System.out.println("pwd(암호화) : "+pwd);
-		System.out.println("pwd(DB) : "+vo.getPwd().substring(3));
-		
 		
 		if(!vo.getPwd().substring(3).equals(pwd)) { //결과적으로 id가 일치하는 사람이 없다는것
 			request.setAttribute("message", "회원 정보가 없습니다.\\n확인하고 다시 로그인 하세요"); //\를 제어 코드로 보기 때문에 \를 2개 써서 인식되도록한다

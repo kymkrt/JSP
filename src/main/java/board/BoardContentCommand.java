@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class BoardContentCommand implements BoardInterface {
 
@@ -16,8 +17,16 @@ public class BoardContentCommand implements BoardInterface {
 		//page 는 예약어라 쓸수 없기 때문에 pag
 		BoardDAO dao = new BoardDAO();
 		
-		//글조회수 1씩 증가하기
-		dao.setContentReadNumPlus(idx);
+		HttpSession session = request.getSession();
+		String idxStr = idx+"";
+		String idxPlus = session.getAttribute("sIdx").toString()+"/";
+		
+		if(session.getAttribute("sIdx").toString().indexOf(idxStr) == -1) {
+			//글조회수 1씩 증가하기
+			dao.setContentReadNumPlus(idx);
+			idxPlus += idxStr;
+			session.setAttribute("sIdx", idxPlus);
+		}
 		
 		BoardVO vo = dao.getBoardContent(idx);
 		

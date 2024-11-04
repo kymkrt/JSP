@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 public class BoardListCommand implements BoardInterface {
@@ -14,7 +15,10 @@ public class BoardListCommand implements BoardInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		BoardDAO dao = new BoardDAO();
-	
+		
+		HttpSession sesion = request.getSession();
+		sesion.setAttribute("", "0");
+		
 		//페이지처리
 		//1. 현재 페이지 번호를 구한다(pag)
 		int pag = request.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag")); //처음에는 페이지가 안넘어온다=첫페이지 1
