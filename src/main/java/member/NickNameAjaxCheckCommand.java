@@ -20,7 +20,6 @@ public class NickNameAjaxCheckCommand implements MemberInterface {
 		String res = "0";
 		
 		if(vo.getNickName() != null && !vo.getNickName().equals("")) res= "1";
-		
 		response.getWriter().write(res); //res가 0 중복아님 1이면 중복
 	}
 }
