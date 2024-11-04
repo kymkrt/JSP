@@ -77,6 +77,15 @@
   			checkTemp.checked = checkedAll.checked;
   		}
 	}
+  	
+  	//회원탈퇴
+  	function deleteMember(mid) {
+		let ans = confirm("정말로 탈퇴시키겠습니까?");
+		if(ans){
+			location.href="MemberDeleteCheckOk.mem?mid=mid";
+		}
+	}
+  	
   </script>
 </head>
 <body>
@@ -142,7 +151,8 @@
 		      </td>
 	      <td>
 	        <c:if test="${vo.userDel == 'NO'}">활동중</c:if>
-	        <c:if test="${vo.userDel != 'NO'}"><font color='red'>탈퇴신청중</font>(${vo.elapsed_date})</c:if>
+	        <c:if test="${vo.userDel != 'NO' and vo.elapsed_date < 30}"><font color='red'>탈퇴신청중</font>(${vo.elapsed_date})</c:if>
+	        <c:if test="${vo.userDel != 'NO' and vo.elapsed_date >= 30}"><button type="button" onclick="deleteMember('${vo.mid}')"class="btn btn-danger" ><font color='red'>탈퇴가능</font></button>(${vo.elapsed_date})</c:if>
 	      </td>
 	      <td>
 	      	<select name="level" id="level" onchange="levelchange(this)">

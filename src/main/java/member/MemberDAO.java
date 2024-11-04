@@ -419,4 +419,21 @@ public class MemberDAO {
 			return vo;
 		}
 
+		public int setMemberDeleteOk(String midDelete) {
+			int res = 0;
+			try {
+				sql = "delete from member where mid = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, midDelete);
+				
+				res = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.out.println("sql오류(setMemberDeleteOk) "+e.getMessage());
+			} finally {
+				pstmtClose();
+			}
+			return res;
+		}
+
 }
