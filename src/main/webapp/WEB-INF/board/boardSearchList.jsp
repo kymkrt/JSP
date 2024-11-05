@@ -6,7 +6,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>boardList.jsp</title>
+  <title>boardSearchList.jsp</title>
   <jsp:include page="/include/bs4.jsp" />
   <script type="text/javascript">
   	'use strict'
@@ -28,10 +28,14 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br /></p>
 <div class="container">
-  <h2>게 시 판 리 스 트</h2>
+  <h2>게 시 판 조 건 별 리 스 트</h2>
+  <div class="text-center">
+  	(<font color="blue">${searchTitle}</font>(으)로 <font color=blue"><b>${searchString}</b></font>(을)를 검색한 결과 <font color=red"><b>${searchCnt}</b></font>건이 검색되었습니다)
+  	
+  </div>
   <table class="table table-borderless text-left">
 		  <tr>
-		  	<td><a href="BoardInput.bo" class="btn btn-success btn-sm">글쓰기</a></td>
+		  	<td><a href="BoardList.bo" class="btn btn-success btn-sm"> 돌아가기</a></td>
 		  </tr>
   </table>
   <table class="table table-hover text-center">
@@ -42,19 +46,19 @@
 		  	<th>글쓴날짜</th>
 		  	<th>조회수(좋아요)</th>
 		  </tr>
-		  <c:set var="curScrStartNo" value="${curScrStartNo}" />
+		 <%--  <c:set var="curScrStartNo" value="${curScrStartNo}" /> --%>
+		 <c:set var="curScrStartNo" value="${searchCnt}" />
 		  <c:forEach var="vo" items="${vos}" varStatus="st">
 		  	<c:if test="${vo.openSw == '공개' || sMid == vo.mid || sLevel == 0}">
 				  <tr>
-				  	<td>${curScrStartNo}</td>
+				  	<td>${st.count}</td>
 				  	<td class="text-left">
 				  		<c:if test="${vo.claim == 'NO' || sMid == vo.mid || sLevel == 0}"><a href="BoardContent.bo?idx=${vo.idx}&pag=${pag}&hostIp=${hostIp}">${vo.title}</a></c:if>
 				  		<c:if test="${vo.claim != 'NO'&& sMid != vo.mid && sLevel != 0}"><a href="javascript:alert('현재글은 신고된 글입니다')">${vo.title}</a></c:if>
-				  		<c:if test="${vo.time_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>
 				  	</td>
-				  	<td>${vo.nickName}</td>
-				  	<td>${vo.wDate}</td>
-				  	<td>${vo.readNum}(${vo.good})</td>
+				  	<td>${vo.nickName }</td>
+				  	<td>${vo.wDate }</td>
+				  	<td>${vo.readNum }</td>
 				  </tr>
 			  </c:if>
 			  <c:set var="curScrStartNo" value="${curScrStartNo - 1}" />
@@ -80,6 +84,7 @@
  	<br/>
   <!-- 블록페이지 시작-->	
   <div class="text-center">
+  <!--보드 서치로 바꾸기  -->
   <!-- []은 구별용으로 해둔것 나중에 꾸미면 좋다 -->
   	<c:if test="${pag > 1}">[<a href="BoardList.bo?pageSize=${pageSize}&pag=1">첫페이지</a>]</c:if>
   	<c:if test="${curBlock > 0}">[<a href="BoardList.bo?pageSize=${pageSize}&pag=${(curBlock - 1)*blockSize + 1}">이전 블록</a>]</c:if>
