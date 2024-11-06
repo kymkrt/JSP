@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <c:set var="hostIp" value="${pageContext.request.remoteAddr}" />
 <!DOCTYPE html>
@@ -15,7 +16,7 @@
 			let pageSize = document.getElementById("pageSize").value;
 			location.href="BoardList.bo?pageSize="+pageSize+"&pag=${pag}&level=${level}";			
 		}
-  	
+		  	
   	//검색 창 커서 이동
   	function cursorMove() {
 			document.getElementById("searchString").focus();
@@ -51,9 +52,10 @@
 				  		<c:if test="${vo.claim == 'NO' || sMid == vo.mid || sLevel == 0}"><a href="BoardContent.bo?idx=${vo.idx}&pag=${pag}&hostIp=${hostIp}">${vo.title}</a></c:if>
 				  		<c:if test="${vo.claim != 'NO'&& sMid != vo.mid && sLevel != 0}"><a href="javascript:alert('현재글은 신고된 글입니다')">${vo.title}</a></c:if>
 				  		<c:if test="${vo.time_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>
+				  		<c:if test="${vo.replyCnt != 0}" >(${vo.replyCnt})</c:if>
 				  	</td>
 				  	<td>${vo.nickName}</td>
-				  	<td>${vo.wDate}</td>
+				  	<td>${fn:substring(vo.wDate, 0, 19)}</td>
 				  	<td>${vo.readNum}(${vo.good})</td>
 				  </tr>
 			  </c:if>

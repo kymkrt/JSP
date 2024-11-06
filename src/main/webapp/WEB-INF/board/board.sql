@@ -32,4 +32,40 @@ select idx, mid, title, datediff(wDate, now()) as date_diff from board order by 
 
 select idx, mid, title, timestampdiff(hour, wDate, now()) as time_diff from board order by idx desc;
 
+ -- 이전글/다음글 연습
+ select idx, title from board where idx < 17 order by idx desc limit 1; -- 이전글
+ 
+ select idx, title from board where idx > 17 order by idx limit 1; -- 다음글
+ 
+ /* 댓글 테이블(boardReply) */
+create table boardReply (
+	idx      			int not null auto_increment, /*댓글의 고유번호*/
+	boardIdx 			int not null, /*원본글(부모글)의 고유번호 - 외래키 지정*/
+	mid 					varchar(30) not null, /*댓글 올린이의 아이디 내가 쓴 댓글 모아보기 같은거할때 닉네임을 기준으로 하면 닉네임을 바꿨을때
+	 이전에 쓴댓글은 볼수가 없어서 아이디로 해준다*/
+	nickName 			varchar(30) not null, /*댓글 올린이의 닉네임*/
+	content text 	not null, /*댓글 내용*/
+	hostIp 				varchar(50) not null, /*접속자 IP*/
+	wDate datetime default now(), /*댓글 올린 날짜*/
+	
+	primary key(idx),
+	foreign key(boardIdx) references board(idx) on update cascade on delete cascade
+);
+
+desc boardReply;
+
+select * from board order by idx desc;
+
+insert into boardReply values(default, 25, 'admin', '관리맨', '관리맨 댓글연습', '192.168.50.58', default);
+insert into boardReply values(default, 26, 'ftom1234', '에프톰', '에프톰 댓글연습', '192.168.50.58', default);
+insert into boardReply values(default, 24, 'gtom124', '지톰', '지톰 댓글연습', '192.168.50.58', default);
+
+select * from boardReply;
+
+select * from board order by idx desc;
+select b.*, r.content from board b, boardReply r where b.idx=r.boardIdx order by idx desc;
+
+-- 서브쿼리는 무조건 () 안에.  select안에 select = 서브쿼리
+/* 서브쿼리는 3군데 들어갈수 있다 필드절, from절, where 절*/
+select b.*, (select count(idx) from boardReply where boardIdx=b.idx) from board b order by idx desc;
 

@@ -8,10 +8,14 @@ create table claim(
 	claimMid varchar(30) not null, /*신고자 아이디 닉네임은 바뀔수 있어어 아이디*/
 	claimContent text not null, /*신고 사유*/
 	claimDate datetime default now(), /*신고한 날짜*/
-	primary key(idx)
+	primary key(idx),
+	foreign key(partIdx) references board(idx) on update cascade on delete cascade
 );
 
 desc claim;
+-- 외래키 추가하기
+alter table claim add constraint foreign key(partIdx) references board(idx) on update cascade on delete cascade;
+
 drop table claim;
 
 insert into claim values (default, 'board', 15, 'admin', '광고/홍보/영리목적', default);

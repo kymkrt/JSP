@@ -1,4 +1,4 @@
-package admin.claim;
+package common;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,26 +7,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import admin.AdminDAO;
-import admin.AdminInterface;
-import common.PageDAO;
-import common.PageVO;
+import admin.claim.ClaimVO;
 
-public class ClaimListCommand implements AdminInterface {
+public class PagenationCommand implements CommonInterFace {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int pag = (request.getParameter("pag")==null || request.getParameter("pag")=="") ? 1 : Integer.parseInt(request.getParameter("pag"));
-		int pageSize = (request.getParameter("pageSize")==null || request.getParameter("pageSize")=="") ? 5 : Integer.parseInt(request.getParameter("pageSize"));
+		int pageSize = (request.getParameter("pageSize")==null || request.getParameter("pageSize")=="") ? 1 : Integer.parseInt(request.getParameter("pageSize"));
 		String tableName = request.getParameter("tableName")==null ? "" : request.getParameter("tableName");
 		
-		AdminDAO dao = new AdminDAO();
-		PageDAO pageDao = new PageDAO();
-		PageVO pageVo = new PageVO();
-		pageVo = pageDao.commonPagenation(pag, pageSize, tableName);
+		PageDAO dao = new PageDAO();
+		PageVO pageVo = dao.commonPagenation(pag, pageSize, tableName);
 		
-		List<ClaimVO> vos = pageDao.getClaimList(pageVo.getStartIndexNo(), pageSize);
+		List<ClaimVO> vos = dao.getClaimList(pageVo.getStartIndexNo(), pageSize);
 		
 		request.setAttribute("pag", pag);
 		request.setAttribute("pageSize", pageSize);

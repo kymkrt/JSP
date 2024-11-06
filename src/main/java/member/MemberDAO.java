@@ -94,7 +94,7 @@ public class MemberDAO {
 					//vo.setSalt(rs.getString("salt"));
 				}
 			} catch (SQLException e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(getMemberIdCheck) "+e.getMessage());
 			} finally {
 				rsClose();
 			}
@@ -112,7 +112,7 @@ public class MemberDAO {
 				pstmt.executeUpdate();
 				
 			} catch (SQLException e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(setPointPlus) "+e.getMessage());
 			} finally {
 				pstmtClose();
 			}
@@ -139,7 +139,7 @@ public class MemberDAO {
 				res = pstmt.executeUpdate();
 				
 			} catch (SQLException e) {
-				System.out.println("sql 오류 " +e.getMessage());
+				System.out.println("sql 오류(setMemberJoinOk) " +e.getMessage());
 			}finally {
 				pstmtClose();
 			}
@@ -180,7 +180,7 @@ public class MemberDAO {
 					//vo.setSalt(rs.getString("salt"));
 				}
 			} catch (SQLException e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(getMemberNickNameCheck) "+e.getMessage());
 			} finally {
 				rsClose();
 			}
@@ -198,7 +198,7 @@ public class MemberDAO {
 				pstmt.executeUpdate();
 				
 			} catch (SQLException e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(setMemberInforUpdate) "+e.getMessage());
 			} finally {
 				pstmtClose();
 			}
@@ -252,7 +252,7 @@ public class MemberDAO {
 				}
 				
 			} catch (Exception e) {
-				System.out.println("sql 오류 "+e.getMessage());
+				System.out.println("sql(getMemberList) 오류 "+e.getMessage());
 			} finally {
 				rsClose();
 			}
@@ -269,7 +269,7 @@ public class MemberDAO {
 				pstmt.setInt(2, idx);
 				pstmt.executeUpdate();
 			} catch (SQLException e) {
-				System.out.println("SQL 오류 : " + e.getMessage());
+				System.out.println("SQL 오류(setMemberLevelUpdate) : " + e.getMessage());
 			}	finally {
 				pstmtClose();
 			}
@@ -296,7 +296,7 @@ public class MemberDAO {
 				
 				res = pstmt.executeUpdate();
 			} catch (Exception e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(setMemberUpdateOk) "+e.getMessage());
 			}finally {
 				pstmtClose();
 			}
@@ -312,7 +312,7 @@ public class MemberDAO {
 				pstmt.setString(2, mid);
 				res = pstmt.executeUpdate();
 			} catch (Exception e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(setMemberPwdCheckAjaxOk) "+e.getMessage());
 			}finally {
 				pstmtClose();
 			}
@@ -329,7 +329,7 @@ public class MemberDAO {
 				res = pstmt.executeUpdate();
 				
 			} catch (Exception e) {
-				System.out.println("sql오류 "+e.getMessage());
+				System.out.println("sql오류(setMemberDeleteCheckOk) "+e.getMessage());
 			}finally {
 				pstmtClose();
 			}

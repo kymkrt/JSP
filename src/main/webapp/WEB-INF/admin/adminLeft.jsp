@@ -31,13 +31,13 @@
 	<div>
 		<h5>회원관리</h5>
 		<div><a href="MemberList.ad" target="adminContent">회원리스트</a></div>
-		<div><a href="ClaimList.ad" target="adminContent">신고리스트</a></div>
+		<div><a href="ClaimList.common" target="adminContent">신고리스트</a></div>
 	</div>  
   <hr/>
   <div>
   	<h5>게시판</h5>
   	<div>
-  		<a href="" target="">게시판 리스트</a>
+  		<a href="BoardList.ad" target="adminContent">게시판 리스트</a>
   	</div>
   </div>
   <hr/>

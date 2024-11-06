@@ -18,6 +18,10 @@
   <script type="text/javascript">
   	'use strict'
   	
+  	$(function() {
+			$(".replyUpdateForm").hide();
+		});
+  	
   	function boardDelete() {
 			let ans = confirm("현재 게시글을 삭제 하시겠습니까");
 			if(ans) location.href="BoardDelete.bo?idx=${vo.idx}";
@@ -124,6 +128,105 @@
 			});
 		}
   	
+  	//댓글 달기 
+  	function replyCheck() {
+			let content = $("#content").val();
+			if(content.trim() == ""){
+				alert("댓글을 입력하세요");
+				return false;
+			}
+			
+			let query = {
+				boardIdx : ${vo.idx}, //숫자니까 따옴표 필요 없음
+				mid : '${sMid}', //문자니까 따옴표 필요
+				nickName : '${sNickName}',
+				content : content, //문자지만 변수라 따옴표 필요없음
+				hostIp : '${pageContext.request.remoteAddr}'
+			}
+			
+			$.ajax({
+				type : "post",
+				url : "BoardReplyInput.bo",
+				data : query,
+				success: function(res) {
+					if(res != "0"){
+						alert("댓글이 입력되었습니다");
+						location.reload(); //전체 리로드
+						//부분 리로드(제이쿼리방식)
+						//$("#replyViewList").load(location.href+' #replyViewList'); //이거 자체가 명령어라 +가 아니라 공백으로 떨어트려야 한다
+						//$(".replyUpdateForm").hide();
+					}
+					else alert("댓글 입력 실패");
+				},
+				error: function() {
+					alert("전송오류");
+				}
+			});
+		}
+  	
+  	//댓글 삭제 처리
+  	function replyDeleteCheck(idx) {
+			let ans = confirm("선택한 댓글을 삭제하시겠습니까?");
+			if(!ans) return false;
+				
+			$.ajax({
+				type: "post",
+				url: "BoardReplyDelete.bo",
+				data: {idx : idx},
+				success: function(res) {
+					if(res!="0") {
+						alert("댓글이 삭제되었습니다");
+						location.reload();
+					}
+					else alert("삭제 실패");
+				},
+				error: function() {
+					alert("전송오류");
+				}
+			});
+		}
+  	
+  	//댓글 수정창 보여주기
+  	function replyDeleteUpdateCheck(idx) {
+  		$(".replyUpdateForm").hide();
+			$("#replyUpdateForm"+idx).show();
+		}
+  	
+  	//댓글 수정하기
+  	function replyUpdateCheck(idx) {
+  		let content = $("#content"+idx).val();
+			if(content.trim() == ""){
+				alert("댓글을 입력하세요");
+				return false;
+			}
+			
+			let query = {
+				idx : idx, //숫자니까 따옴표 필요 없음
+				content : content, //문자지만 변수라 따옴표 필요없음
+				hostIp : '${pageContext.request.remoteAddr}'
+			}
+			
+			$.ajax({
+				type : "post",
+				url : "BoardReplyUpdate.bo",
+				data : query,
+				success: function(res) {
+					if(res != "0"){
+						alert("댓글이 수정되었습니다");
+						location.reload();
+					}
+					else alert("댓글 수정 실패");
+				},
+				error: function() {
+					alert("전송오류");
+				}
+			});
+		}
+  	
+  	//댓글 수정창 닫기
+  	function replyUpdateViewClose(idx) {
+			$("#replyUpdateForm"+idx).hide();
+		}
   </script>
 </head>
 <body>
@@ -185,6 +288,93 @@
 	    </tr>
 	  </table>
 </div>
+<hr/>
+
+<div class="container">
+	<!--이전글 다음글 시작 -->
+	<table class="table table-borderless">
+		<tr>
+			<td>
+				<c:if test="${!empty nextVo.title}">
+					다음글 <a href="BoardContent.bo?idx=${nextVo.idx}&pag=${pag}&pageSize=${pageSize}">${nextVo.title}</a><br/>
+				</c:if>
+				<c:if test="${!empty preVo.title}">
+					이전글 <a href="BoardContent.bo?idx=${preVo.idx}&pag=${pag}&pageSize=${pageSize}">${preVo.title}</a><br/>
+				</c:if>
+			</td>
+		</tr>
+	</table>
+	<!--이전글 다음글 끝 -->
+	<p><br/></p>
+	
+	<div id="replyViewList">
+	<!--댓글 처리(리스트, 입력) 시작-->
+		<!--댓글 리스트-->
+		<table class="table table-hover text-center">
+			<tr>
+				<th>작성자</th>
+				<th>댓글내용</th>
+				<th>댓글올린날짜</th>
+				<th>접속IP</th>
+			</tr>
+			<!--그냥 vos를 쓰면 위랑 겹쳐서 바꿔줌   -->
+			<c:forEach var="vo" items="${replyVos}" varStatus="st">
+				<tr>
+					<td>${vo.nickName}
+						<c:if test="${sMid == vo.mid || sLevel == 0}"><!--배타적 필요없음 조건맞을때만 나오니까 -->
+							(<a href="javascript:replyDeleteCheck(${vo.idx})" title="댓글삭제">X</a>)<!--숫자라 따옴표 필요없이 그냥 idx  -->
+							<c:if test="${sMid == vo.mid}">
+								<a href="javascript:replyDeleteUpdateCheck(${vo.idx})" title="댓글수정">√</a>
+							</c:if>
+						</c:if>
+					</td>
+					<td>${fn:replace(vo.content, newLine, "<br/>")}</td>
+					<td>${fn:substring(vo.wDate, 0, 19)}</td>
+					<td>${vo.hostIp}</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="m-0 p-0">
+						<div id="replyUpdateForm${vo.idx}" style="border: none;" class="replyUpdateForm">
+							<form name="replyUpdateForm">
+								<table class="table table-borderless text-center">
+									<tr>
+										<td style="width:85%" class="text-left">
+											글 내용 : 
+											<textarea rows="4" name="content" id="content${vo.idx}" class="form-control">${vo.content}</textarea>
+										</td>
+										<td style="width:15%"><br/>
+											<p>작성자 : ${sNickName}</p>
+											<a href="javascript:replyUpdateCheck(${vo.idx})" class="badge badge-primary">댓글수정</a>
+											<a href="javascript:replyUpdateViewClose(${vo.idx})" class="badge badge-warning">댓글창닫기</a>
+										</td>
+									</tr>
+								</table>	
+							</form>
+						</div>
+					</td>
+				</tr>
+			</c:forEach>
+			<tr><td colspan="4" class="m-0 p-0"></td></tr>
+		</table>
+		<!--댓글 입력창-->
+		<form name="replyFrom">
+			<table class="table table-borderless text-center">
+				<tr>
+					<td style="width:85%" class="text-left">
+						글 내용 : 
+						<textarea rows="4" name="content" id="content" class="form-control" placeholder="댓글을 입력하세요"></textarea>
+					</td>
+					<td style="width:15%"><br/>
+						<p>작성자 : ${sNickName}</p>
+						<p><input type="button" value="댓글달기" onclick="replyCheck()" class="btn btn-info btn-sm" /></p>
+					</td>
+				</tr>
+			</table>	
+		</form>
+	<!--댓글 처리 끝-->
+	</div>
+</div><!--이전글/다음글의 마감 div -->
+
 <!-- The Modal 시작 -->
 <div class="modal fade" id="myModal">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

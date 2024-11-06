@@ -1,6 +1,8 @@
 package board;
 
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,10 +32,25 @@ public class BoardContentCommand implements BoardInterface {
 			session.setAttribute("sIdx", sIdx);
 		}
 		
+		//이전글/다음글 검색 아래처럼 나눠도 되지만
+		//dao.getPreSearch(idx);
+		//dao.getNextSearch(idx);
+		//이렇게 메소드는 하나만 만들고 처리만 나눠도 된다
+		BoardVO preVo = dao.getPreNextSearch(idx, "pre");
+		BoardVO nextVo = dao.getPreNextSearch(idx, "next");
+		request.setAttribute("preVo", preVo);
+		request.setAttribute("nextVo", nextVo);
+		
+		//현재 게시글 vo에 담아오기
 		BoardVO vo = dao.getBoardContent(idx);
 		
 		request.setAttribute("vo", vo);
 		request.setAttribute("pag", pag);
+		
+		
+		//댓글처리
+		ArrayList<BoardReplyVO> replyVos = dao.getBoardReply(idx);
+		request.setAttribute("replyVos", replyVos);
 		
 	}
 

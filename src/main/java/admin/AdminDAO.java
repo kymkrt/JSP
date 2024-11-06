@@ -51,7 +51,7 @@ public class AdminDAO {
 				name = rs.getString("name");
 			}
 		} catch (SQLException e) {
-			System.out.println("sql오류 "+e.getMessage());
+			System.out.println("sql오류(getIdSearch) "+e.getMessage());
 		} finally {
 			rsClose();
 		}
@@ -66,7 +66,7 @@ public class AdminDAO {
 			sql = "select point name from member where ";
 			
 		} catch (Exception e) {
-			System.out.println("sql오류 "+e.getMessage());
+			System.out.println("sql오류(getMostPoint) "+e.getMessage());
 		}
 		
 		
@@ -88,7 +88,7 @@ public class AdminDAO {
 				vo.setPoint(rs.getInt("point"));
 			}
 		} catch (Exception e) {
-			System.out.println("sql오류 "+e.getMessage());
+			System.out.println("sql오류(getAjaxPointCheck) "+e.getMessage());
 		} finally {
 			rsClose();
 		}
@@ -125,11 +125,14 @@ public class AdminDAO {
 	}
 	
 	//신고 내역 전체 리스트
-	public List<ClaimVO> getClaimList() {
+	public List<ClaimVO> getClaimList(int startIndexNo, int pageSize) {
 		List<ClaimVO> vos = new ArrayList<ClaimVO>();
 		try {
-			sql = "select c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.claim as claim from claim c, board b where c.partIdx = b.idx order by idx desc";
+			//sql = "select c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.claim as claim from claim c, board b where c.partIdx = b.idx order by idx desc";
+			sql = "select c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.claim as claim from claim c, board b where c.partIdx = b.idx order by idx desc limit ?, ?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
 			
 			rs = pstmt.executeQuery();
 			
@@ -200,6 +203,48 @@ public class AdminDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+	
+	//선택된 게시물들 삭제하기(이때 선택 게시물이 신고된 글이라면 함께 신고글도 함께 삭제처리한다)
+	public void setBoardSelectDelete(int idx) {
+		
+		try {
+			sql = "delete from board where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.executeUpdate(); //선언문이 없으면 자동완성 안됨 앞에 res가 있으면 자동으로 완성한다
+			/*
+			 * pstmtClose();
+			 * 
+			 * sql = "delete from claim where part='board' and idx = ?"; pstmt =
+			 * conn.prepareStatement(sql); pstmt.setInt(1, idx); pstmt.executeUpdate();
+			 * //선언문이 없으면 자동완성 안됨 앞에 res가 있으면 자동으로 완성한다
+			 */			
+		} catch (SQLException e) {
+			System.out.println("sql오류(setBoardSelectDelete) "+e.getMessage());
+		}finally {
+			pstmtClose();
+		}
+		
+	}
+	
+	//총수 구하는거 변경 (게시글만 지우면 신고리스트에서 안지워져서 자리만 차지한다 그걸 해결하기 위한것)
+	public int getTotRecCnt() {
+		int totRecCnt = 0;
+		try {
+			//sql = "select count(idx) as totRecCnt from claim";
+			sql = "select count(*) as totRecCnt from claim c, board b where c.partIdx=b.idx";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			totRecCnt = rs.getInt("totRecCnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류: "+e.getMessage());
+		}finally {
+			rsClose();
+		}
+		return totRecCnt;
 	}
 
 }

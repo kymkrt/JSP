@@ -84,7 +84,7 @@ public class GuestDAO {
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("데이터 가져오기 실패 "+e.getMessage());
+			System.out.println("데이터 가져오기 실패(getGuestList) "+e.getMessage());
 		} finally {
 			rsClose();//select는 rsClose
 		}
@@ -107,7 +107,7 @@ public class GuestDAO {
 			res = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			System.out.println("sql오류 " +e.getMessage());
+			System.out.println("sql오류(setGuestInputOk) " +e.getMessage());
 		}finally {
 			pstmeClose();
 		}
@@ -126,7 +126,7 @@ public class GuestDAO {
 			res = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			System.out.println("sql오류 " +e.getMessage());
+			System.out.println("sql오류(setGuestDeleteOk) " +e.getMessage());
 		}finally {
 			pstmeClose();
 		}
@@ -147,7 +147,7 @@ public class GuestDAO {
 			totRecCnt = rs.getInt("cnt");//필드명 모르면 숫자(1로 시작) 혹은 sql에 as로 별명 주기
 			
 		} catch (SQLException e) {
-			System.out.println("sql오류 " +e.getMessage());
+			System.out.println("sql오류(getTotRecCnt) " +e.getMessage());
 		}finally {
 			rsClose(); //select임
 		}
@@ -167,7 +167,7 @@ public class GuestDAO {
 			rs.next();
 			guestCnt = rs.getInt("guestCnt");
 		} catch (SQLException e) {
-			System.out.println("SQL 오류 : " + e.getMessage());
+			System.out.println("SQL 오류(getGuestCnt) : " + e.getMessage());
 		} finally {
 			rsClose();
 		}
