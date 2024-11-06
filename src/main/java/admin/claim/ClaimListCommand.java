@@ -19,14 +19,16 @@ public class ClaimListCommand implements AdminInterface {
 		
 		int pag = (request.getParameter("pag")==null || request.getParameter("pag")=="") ? 1 : Integer.parseInt(request.getParameter("pag"));
 		int pageSize = (request.getParameter("pageSize")==null || request.getParameter("pageSize")=="") ? 5 : Integer.parseInt(request.getParameter("pageSize"));
-		String tableName = request.getParameter("tableName")==null ? "" : request.getParameter("tableName");
+		String tableName = request.getParameter("tableName")==null ? "claim" : request.getParameter("tableName");
 		
 		AdminDAO dao = new AdminDAO();
 		PageDAO pageDao = new PageDAO();
 		PageVO pageVo = new PageVO();
-		pageVo = pageDao.commonPagenation(pag, pageSize, tableName);
 		
-		List<ClaimVO> vos = pageDao.getClaimList(pageVo.getStartIndexNo(), pageSize);
+		int totRecCnt = pageDao.getTotRecCnt(tableName);
+		pageVo = pageDao.commonPagenation(pag, pageSize, totRecCnt);
+		
+		List<ClaimVO> vos = dao.getClaimList(pageVo.getStartIndexNo(), pageSize);
 		
 		request.setAttribute("pag", pag);
 		request.setAttribute("pageSize", pageSize);

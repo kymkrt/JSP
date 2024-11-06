@@ -34,12 +34,11 @@ public class PageDAO {
 		}
 	}
 	
-	public PageVO commonPagenation(int pag, int pageSize, String tableName) {
+	public PageVO commonPagenation(int pag, int pageSize, int totRecCnt_) {
 		
-		PageDAO dao = new PageDAO();
 		PageVO vo = new PageVO();
 		
-		int totRecCnt = dao.getTotRecCnt(tableName);
+		int totRecCnt = totRecCnt_;
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;
 		int curScrStartNo = totRecCnt - startIndexNo;
@@ -59,7 +58,6 @@ public class PageDAO {
 		vo.setBlockSize(blockSize);
 		vo.setCurBlock(curBlock);
 		vo.setLastBlock(lastBlock);
-		vo.setTableName(tableName);
 		
 		return vo;
 	}
@@ -67,7 +65,7 @@ public class PageDAO {
 	public int getTotRecCnt(String tableName) {
 		int totRecCnt = 0;
 		try {
-			sql = "select count(*) as totRecCnt from claim";
+			sql = "select count(*) as totRecCnt from "+tableName;
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -83,42 +81,4 @@ public class PageDAO {
 		return totRecCnt;
 	}
 
-	
-	public List<ClaimVO> getClaimList(int startIndexNo, int pageSize) {
-		List<ClaimVO> vos = new ArrayList<ClaimVO>();
-		try {
-			//sql = "select c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.claim as claim from claim c, board b where c.partIdx = b.idx order by idx desc";
-			sql = "select c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.claim as claim from claim c, board b where c.partIdx = b.idx order by idx desc limit ?, ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startIndexNo);
-			pstmt.setInt(2, pageSize);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				ClaimVO vo = new ClaimVO();
-				//테이블 필드명
-				vo.setIdx(rs.getInt("idx"));
-				vo.setPart(rs.getString("part"));
-				vo.setPartIdx(rs.getInt("partIdx"));
-				vo.setClaimMid(rs.getString("claimMid"));
-				vo.setClaimContent(rs.getString("claimContent"));
-				vo.setClaimDate(rs.getString("claimDate"));
-				//VO에 추가한 필드명
-				vo.setTitle(rs.getString("title"));
-				vo.setNickName(rs.getString("nickName"));
-				vo.setMid(rs.getString("mid"));
-				vo.setClaim(rs.getString("claim"));
-				
-				vos.add(vo);
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("sql오류(getClaimList) "+e.getMessage());
-		} finally {
-			rsClose();
-		}
-		
-		return vos;
-	}
 }

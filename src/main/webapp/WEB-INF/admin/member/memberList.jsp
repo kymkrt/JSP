@@ -184,20 +184,20 @@
   	</tr>
   </table>
  
-  <!-- 블록페이지 시작-->
-  <div class="text-center">
-  <!-- []은 구별용으로 해둔것 나중에 꾸미면 좋다 -->
-  	<c:if test="${pag > 1}">[<a href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=1">첫페이지</a>]</c:if>
-  	<c:if test="${curBlock > 0}">[<a href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${(curBlock - 1)*blockSize + 1}">이전 블록</a>]</c:if>
-  	<c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize)+blockSize}" varStatus="st">
-  		<c:if test="${i <= totPage && i == pag}">[<a href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${i}"><font color="red"><b>${i}</b></font></a>]</c:if>
-  	<!--배타적으로 해야한다  -->
-  		<c:if test="${i <= totPage && i != pag}">[<a href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${i}">${i}</a>]</c:if>
-  	</c:forEach>
-  	<c:if test="${curBlock < lastBlock}">[<a href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${(curBlock + 1)*blockSize + 1}">다음 블록</a>]</c:if>
-  	<c:if test="${pag < totPage}">[<a href="MemberList.ad?level=${level}&pageSize=${pageSize}&pag=${totPage}">마지막페이지</a>]</c:if>
-  </div>
-  <!-- 블록페이지 끝 -->
+  <!-- 블록페이지 시작 -->
+<div class="text-center">
+  <ul class="pagination justify-content-center">
+	  <c:if test="${pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.ad?level=${level}&tableName=Member&pageSize=${pageSize}&pag=1">첫페이지</a></li></c:if>
+	  <c:if test="${curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.ad?level=${level}&tableName=Member&pageSize=${pageSize}&pag=${(curBlock-1)*blockSize + 1}">이전블록</a></li></c:if>
+	  <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
+	    <c:if test="${i <= totPage && i == pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="MemberList.ad?level=${level}&tableName=Member&pageSize=${pageSize}&pag=${i}">${i}</a></li></c:if>
+	    <c:if test="${i <= totPage && i != pag}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.ad?level=${level}&tableName=Member&pageSize=${pageSize}&pag=${i}">${i}</a></li></c:if>
+	  </c:forEach>
+	  <c:if test="${curBlock < lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.ad?level=${level}&tableName=Member&pageSize=${pageSize}&pag=${(curBlock+1)*blockSize+1}">다음블록</a></li></c:if>
+	  <c:if test="${pag < totPage}"><li class="page-item"><a class="page-link text-secondary" href="MemberList.ad?level=${level}&tableName=Member&pageSize=${pageSize}&pag=${totPage}">마지막페이지</a></li></c:if>
+  </ul>
+</div>
+<!-- 블록페이지 끝 -->
 </div>
 <p><br/></p>
 </body>
