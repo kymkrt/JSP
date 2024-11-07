@@ -16,12 +16,12 @@ public class JavaFileDownloadCommand implements StudyInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String realPath = request.getServletContext().getRealPath("/images/psdtest/"); //가상경로. 뷰에서는 콘텍스트경로(ctp) 써줘야함
+		String realPath = request.getServletContext().getRealPath("/images/psdtest"); //가상경로. 뷰에서는 콘텍스트경로(ctp) 써줘야함
 																																		//마지막 /가 언제 붙고 안붙는지 프로그래머가 판단해야한다
 		String fileName = request.getParameter("file")==null ? "" : request.getParameter("file");
 		
 		//자바관련?은 전부 생성해야한다
-		File file = new File(realPath + fileName);//io 로 만들어야한다
+		File file = new File(realPath +"/"+ fileName);//io 로 만들어야한다
 		
 		/* HTTP프로토콜 형식에 맞도록 헤더에 전송할 파일의 정보를 담아준다 */
 		//서버 요청은 전부 서블릿컨텍스트 													파일 타입인데 스트링을 요구하기 때문에 바꿔줌
@@ -33,7 +33,7 @@ public class JavaFileDownloadCommand implements StudyInterface {
 		
 		String downLoadName = "";
 		//사용하는 브라우저의 형식에 맞춰야한다 근데 지금은 다 통일됨 
-		if(request.getHeader("user-agent").indexOf("MSIE") == -1) { //user-agent가 브라우저다
+		if(request.getHeader("user-agent").indexOf("MSIE") != -1) { //user-agent가 브라우저다
 			downLoadName = new String(fileName.getBytes("UTF-8"), "8859_1"); //스트링 객체에서 코드변환하는것 바이트 단위로 넘어오는걸 하나로 묶어주는 객체
 		}
 		else {
