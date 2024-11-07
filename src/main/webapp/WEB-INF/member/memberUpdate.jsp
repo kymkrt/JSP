@@ -74,7 +74,26 @@
 			
 			swNick = 0;
 			
-			myform.submit();
+			let photo = document.getElementById("photo").value;
+			let maxSize = 1024*1024*10; //저장파일의 최대용량을 10MByte까지로 제한 
+			let ext = photo.substring(photo.lastIndexOf(".")+1).toLowerCase(); //.다음부터 찾아야 해서 +1
+			
+			if(photo.trim() == ""){
+				alert("업로드할 파일을 선택하세요");
+				return false;
+			}
+			//여러개가 올수 있기 때문에 배열로 봐야함  그래서 files, size 둘다 예약어임
+			let fileSize = document.getElementById("file").files[0].size;
+			if(fileSize > maxSize){
+				alert("업로드할 파일의 최대용량은 10MB 입니다")
+			}
+			// 안되는거 목록이면 확장자가 너무 많아서 안된다  되는거로 생각해야됨
+			else if(ext != 'jpg' && ext != 'png' && ext != 'gif' && ext != 'jpeg' && ext != 'bmp'){
+				alert("업로드 가능한 파일은 'jpg/png/gif/jpeg/bmp'만 가능합니다");
+			}
+			else{
+				myform.submit();
+			}
 		}
 	}
   	
@@ -155,7 +174,7 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br /></p>
 <div class="container">
-  <form name="myform" id="myform" method="post" action="MemberUpdateOk.mem" onsubmit="return fCheck()">
+  <form name="myform" id="myform" method="post" action="MemberUpdateOk.mem" onsubmit="return fCheck()" enctype="multipart/form-data">
 	<table class="table table-bordered">
 		<tr id="subject">
 			<td class="text-center" colspan="7"><b>회원 정보 수정</b></td>

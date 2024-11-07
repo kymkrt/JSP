@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import common.SecurityUtil;
 
 public class MemberUpdateOkCommand implements MemberInterface {
@@ -19,17 +22,27 @@ public class MemberUpdateOkCommand implements MemberInterface {
 		HttpSession session = request.getSession();
 		String mid = (String) session.getAttribute("sMid");
 		
+		
+		String realPath = request.getServletContext().getRealPath("/images/pdstest");
+		int maxSize = 1024*1024*10;
+		String encoding = "UTF-8";
+		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
+		
+		String ofPhotoName = multipartRequest.getOriginalFileName("photo");
+		String fsPhotoName = multipartRequest.getFilesystemName("photo");
+		
+		
 		//String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
-		String nickName = request.getParameter("nickName")==null ? "" : request.getParameter("nickName");
-		String name = request.getParameter("name")==null ? "" : request.getParameter("name");
-		String gender = request.getParameter("gender")==null ? "" : request.getParameter("gender");
-		String birthday = request.getParameter("birthday")==null ? "" : request.getParameter("birthday");
-		String tel = request.getParameter("tel")==null ? "" : request.getParameter("tel");
-		String address = request.getParameter("address2")==null ? "" : request.getParameter("address2");
-		String email = request.getParameter("email")==null ? "" : request.getParameter("email");
-		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
-		String photo = request.getParameter("photo")==null ? "" : request.getParameter("photo");
-		String userInfor = request.getParameter("userInfor")==null ? "" : request.getParameter("userInfor");
+		String nickName = multipartRequest.getParameter("nickName")==null ? "" : multipartRequest.getParameter("nickName");
+		String name = multipartRequest.getParameter("name")==null ? "" : multipartRequest.getParameter("name");
+		String gender = multipartRequest.getParameter("gender")==null ? "" : multipartRequest.getParameter("gender");
+		String birthday = multipartRequest.getParameter("birthday")==null ? "" : multipartRequest.getParameter("birthday");
+		String tel = multipartRequest.getParameter("tel")==null ? "" : multipartRequest.getParameter("tel");
+		String address = multipartRequest.getParameter("address2")==null ? "" : multipartRequest.getParameter("address2");
+		String email = multipartRequest.getParameter("email")==null ? "" : multipartRequest.getParameter("email");
+		String content = multipartRequest.getParameter("content")==null ? "" : multipartRequest.getParameter("content");
+		String photo = multipartRequest.getParameter("photo")==null ? "" : multipartRequest.getParameter("photo");
+		String userInfor = multipartRequest.getParameter("userInfor")==null ? "" : multipartRequest.getParameter("userInfor");
 		
 		if(photo.equals("")) photo = "noimages.jpg";
 		
@@ -44,7 +57,8 @@ public class MemberUpdateOkCommand implements MemberInterface {
 		vo.setAddress(address);
 		vo.setEmail(email);
 		vo.setContent(content);
-		vo.setPhoto(photo);
+		//vo.setPhoto(photo);
+		vo.setPhoto(fsPhotoName);
 		vo.setUserInfo(userInfor);
 		
 		System.out.println("MemeberVO : "+vo); //이렇게 다써줘야 좋다

@@ -31,7 +31,8 @@
   <!--과제 방명록이 올린 이름이 같거나 닉네임이 같거나 id가 같으면 같은 사람이 쓴걸로 간주  -->
 	<div>방명록에 작성한글 수 : <font color="blue">총 <b>${guestCnt}</b>건</font></div>
   <hr/>
-  <div>회원사진 : <img src="${ctp}/images/member/${mVo.photo}" width="300px" /></div>
+  <div>회원사진 기존 : <img src="${ctp}/images/member/${mVo.photo}" width="300px" /></div>
+  <div>회원사진 업로드 : <img src="${ctp}/images/pdstest/${mVo.photo}" width="300px" /></div>
 </div>
   <!-- The Modal -->
 <div class="modal fade" id="myModal">
