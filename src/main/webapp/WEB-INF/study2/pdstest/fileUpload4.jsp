@@ -47,6 +47,7 @@
 			$("#fileBox").append(fileBox); //append가 추가 html이나 text는 덮어쓰는것
 		} 
   
+  	//파일박스삭제처리
   	function deleteBox(cnt) {
 			$("#fBox"+cnt).remove();
 		}

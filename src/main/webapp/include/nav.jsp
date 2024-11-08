@@ -23,7 +23,7 @@
 	        <a class="nav-link" href="BoardList.bo">Board</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">Pds</a>
+	        <a class="nav-link" href="PdsList.pds">Pds</a>
 	      </li>    
 	      <li class="nav-item mr-2">
 	    	 <div class="dropdown"><!--여기에 mr 붙여도 됨  -->
