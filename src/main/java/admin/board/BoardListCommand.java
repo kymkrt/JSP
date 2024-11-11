@@ -30,7 +30,7 @@ public class BoardListCommand implements AdminInterface {
 		int pageSize = request.getParameter("pageSize")==null ? 5 : Integer.parseInt(request.getParameter("pageSize"));//확장성 고려차원에서 이렇게 해둠 원래는 그냥 5해도된다
 		
 		//3. 총 레코드 건수를 구한다 (totRecCnt) - sql 명령어 중에서 count함수 이용
-		int totRecCnt = dao.getTotRecCnt(); // 여기서 레벨이 가야 된다
+		int totRecCnt = dao.getTotRecCnt("", ""); // 여기서 레벨이 가야 된다
 		
 		//4. 총 페이지 건수를 구한다(totPage) 딱떨어지면 그냥 쓰고 아니면 1더해주기
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;

@@ -39,11 +39,23 @@ public class PdsDAO {
 	}
 
 	//자료실 전체 자료 가져오기
-	public ArrayList<PdsVO> getPdsList() {
+	public ArrayList<PdsVO> getPdsList(int startIndexNo, int pageSize, String part) {
 		ArrayList<PdsVO> vos = new ArrayList<PdsVO>();
 		try {
-			sql = "select * from pds order by idx desc";
-			pstmt = conn.prepareStatement(sql);
+			if(part.equals("전체")) {
+				sql = "select * from pds order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
+			}
+			else {
+				sql = "select * from pds where part =? order by idx desc limit ?,?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, part);
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
+			}
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -195,6 +207,31 @@ public class PdsDAO {
 			rsClose();
 		}
 		return vo;
+	}
+
+	//전체 레코드 건수
+	public int getTotRecCnt(String part) {
+		int totRecCnt = 0; //그냥 res 써도됨
+		try {
+				if(part.equals("전체")) {
+					sql = "select count(*) as totRecCnt from pds";
+					pstmt = conn.prepareStatement(sql);
+				}
+				else {
+					sql = "select count(*) as totRecCnt from pds where part =?";//as 뒤는 변수명이라 마음대로 줘도 됨
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, part);
+				}
+				rs = pstmt.executeQuery();
+			
+				rs.next();
+				totRecCnt = rs.getInt("totRecCnt");
+		} catch (Exception e) {
+			System.out.println("sql오류(getTotRecCnt.pdsList) "+e.getMessage());
+		}finally {
+			rsClose();
+		}
+		return totRecCnt;
 	}
 
 	

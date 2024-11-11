@@ -184,18 +184,25 @@ public class BoardDAO {
 	}
 	
 	//게시판 글의 총 수 구하기
-	public int getTotRecCnt() {
-		int totRecCnt = 0; //그냥 res 써도됨
+	public int getTotRecCnt(String search, String searchString) {
+		int totRecCnt = 0; //res 가능
 		try {
-				sql = "select count(*) as totRecCnt from board";//as 뒤는 변수명이라 마음대로 줘도 됨
+			if(search.equals("")) {
+				sql = "select count(*) as cnt from board";
 				pstmt = conn.prepareStatement(sql);
-				rs = pstmt.executeQuery();
+			}
+			else {
+				sql = "select count(*) as cnt from board where "+search+" like ?"; // as뒤는 변수명이라 마음대로 줘도 됨
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%"+searchString+"%");
+			}
+			rs = pstmt.executeQuery();
 			
-				rs.next();
-				totRecCnt = rs.getInt("totRecCnt");
-		} catch (Exception e) {
-			System.out.println("sql오류(getTotRecCnt) "+e.getMessage());
-		}finally {
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("SQL 오류(getTotRecCnt.board) : " + e.getMessage());
+		} finally {
 			rsClose();
 		}
 		return totRecCnt;
@@ -243,7 +250,7 @@ public class BoardDAO {
 	}
 	
 	//검색된 게시글 리스트
-	public List<BoardVO> getBoardSearchList(String search, String searchString) {
+	public List<BoardVO> getBoardSearchList(int startIndexNo, int pageSize, String search, String searchString) {
 		List<BoardVO> vos = new ArrayList<BoardVO>();
 		try {
 			sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as time_diff from board where "+search+"  like ?";//where부분에 ?로 해서 넣으면 안된다
@@ -251,6 +258,19 @@ public class BoardDAO {
 			//위와 같은 방식으로 변수 자체를 넣으면 값을 그대로 넣을수 있다
 			//단 이 같은 방식은 제대로 설계를 했기 때문에 가능 select같은 곳에서 밸류 이름을 필드값과 똑같이 정했기 때문이다 
 			//만약 그러지 못했다면 if(asd.equl("값")) 이런식으로 해서 sql을 여러개 만들어야 한다
+			
+			/*
+			 선생님 버전
+			 	sql = "select *, datediff(wDate, now()) as date_diff, timestampdiff(hour, wDate, now()) as time_diff"
+					+ " from board where "+search+" like ? order by idx desc limit ?,?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+searchString+"%");
+			pstmt.setInt(2, startIndexNo);
+			pstmt.setInt(3, pageSize);
+			rs = pstmt.executeQuery();
+			 
+			 */
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, "%"+searchString+"%");
 			rs = pstmt.executeQuery();
@@ -261,7 +281,12 @@ public class BoardDAO {
 				vo.setMid(rs.getString("mid"));
 				vo.setNickName(rs.getString("nickName"));
 				vo.setTitle(rs.getString("title"));
-				vo.setContent(rs.getString("content"));
+				
+				//vo.setContent(rs.getString("content"));
+				String content = rs.getString("content").replaceAll("\\r?\\n", "<br/>");
+				content = content.replace("'", "&#39;").replace("\"", "&#39;");
+				vo.setContent(content);
+				
 				vo.setHostIp(rs.getString("hostIp"));
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setReadNum(rs.getInt("readNum"));

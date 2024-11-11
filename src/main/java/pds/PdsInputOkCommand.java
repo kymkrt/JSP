@@ -15,6 +15,7 @@ public class PdsInputOkCommand implements PdsInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
 		String realPath = request.getServletContext().getRealPath("/images/pds"); //서버의 저장될 파일의 경로
 		int maxSize = 1024*1024*30;  //1024Byte=1KB=2^10, 1MB=1024KByte=2^20Byte=1024B*1024B 20메가. 계산해서 넣어도된다
 		String encoding = "UTF-8";
@@ -58,6 +59,9 @@ public class PdsInputOkCommand implements PdsInterface {
 		String openSw = multipartRequest.getParameter("openSw")==null ? "" : multipartRequest.getParameter("openSw");
 		String hostIp = multipartRequest.getParameter("hostIp")==null ? "" : multipartRequest.getParameter("hostIp");
 		
+		int pag = multipartRequest.getParameter("pag")==null ? 1 : Integer.parseInt(request.getParameter("pag"));
+		int pageSize = multipartRequest.getParameter("pageSize")==null ? 5 : Integer.parseInt(request.getParameter("pageSize"));//확장성 고려차원에서 이렇게 해둠 원래는 그냥 5해도된다
+		
 		PdsVO vo = new PdsVO();
 		vo.setMid(mid);
 		vo.setNickName(nickName);
@@ -77,11 +81,11 @@ public class PdsInputOkCommand implements PdsInterface {
 		
 		if(res != 0) {
 			request.setAttribute("message", "자료실에 자료가 업로드 되었습니다");
-			request.setAttribute("url", "PdsList.pds");
+			request.setAttribute("url", "PdsList.pds?part="+part+"&pag="+pag+"&pageSize="+pageSize);
 		}
 		else {
 			request.setAttribute("message", "업로드 실패");
-			request.setAttribute("url", "PdsInput.pds");
+			request.setAttribute("url", "PdsList.pds?part="+part+"&pag="+pag+"&pageSize="+pageSize);
 		}
 	}
 }
