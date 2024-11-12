@@ -59,10 +59,30 @@
       text-shadow: 0 0 0 rgba(250, 200, 0, 0.98);/* a는 불투명도 1이 백프로 그냥 보임 */
     }
   </style>
-  <script type="text/javascript">
-  	'use strict'	
-  
-  	//화살표 클릭시 화면 상단이동(부드럽게)
+  <script>
+    'use strict';
+    
+    $(function() {
+    	$("#reviewShowBtn").hide();
+    	$("#reviewHideBtn").show();
+    	$("#reviewBox").show();
+    });
+    
+    // 리뷰 보이기 버튼 클릭
+    function reviewShow() {
+    	$("#reviewShowBtn").hide();
+    	$("#reviewHideBtn").show();
+    	$("#reviewBox").show();
+    }
+    
+    // 리뷰 가리기 버튼 클릭
+    function reviewHide() {
+    	$("#reviewShowBtn").show();
+    	$("#reviewHideBtn").hide();
+    	$("#reviewBox").hide();
+    }
+    
+    // 화살표클릭시 화면 상단이동(부드럽게)
     $(window).scroll(function(){
     	if($(this).scrollTop() > 100) {
     		$("#topBtn").addClass("on");
@@ -75,23 +95,130 @@
     		window.scrollTo({top:0, behavior: "smooth"});
     	});
     });
-  	
-  	//리뷰등록하기
-  	function reviewCheck() {
-			let star = reviewForm.star.value;
-			let review = reviewForm.review.value;
-			
-			if(star == ""){
-				alert("별점을 부여해주세요");
-			}
-		/* 	else if(review.trim() == ""){
-				alert("리뷰를 입력해주세요");
-				reviewForm.review.focus();
-			} */
-			
-			alert("별점 : "+star);
-		}
-  	
+    
+    // 리뷰 등록하기
+    function reviewCheck() {
+    	let star = reviewForm.star.value;
+    	let review = reviewForm.review.value;
+    	
+    	if(star == "") {
+    		alert("별점을 부여해 주세요");
+    	}
+    	/*
+    	else if(review.trim() == "") {
+    		alert("리뷰를 입력해 주세요");
+    		reviewForm.review.focus();
+    	}
+    	*/
+    	//alert("별점 : " + star);
+    	let query = {
+    			part : 'pds',
+    			partIdx: ${vo.idx},
+    			mid    : '${sMid}',
+    			nickName    : '${sNickName}',
+    			star     : star,
+    			content: review
+    	}
+    	
+    	$.ajax({
+    		type : "post",
+    		url  : "ReviewInputOk.ad",
+    		data : query,
+    		success:function(res) {
+    			alert(res);
+    			location.reload();
+    		},
+    		error : function() {
+    			alert('전송오류!!');
+    		}
+    	});
+    }
+    
+    // 리뷰 삭제하기
+    function reviewDelete(idx) {
+    	let ans = confirm("리뷰를 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		url  : "ReviewDelete.ad",
+    		type : "post",
+    		data : {idx : idx},
+    		success:function(res) {
+    			if(res != "0") {
+    				alert('리뷰가 삭제되었습니다.');
+    				location.reload();
+    			}
+    			else alert("리뷰 삭제 실패~~\n하위 댓글이 존재합니다.");
+    		},
+    		error : function() {
+    			alert("전송오류!");
+    		}
+    	});
+    }
+    
+    // 리뷰 댓글 달기폼 보여주기
+    function reviewReply(idx, nickName, content) {
+    	if(content == "") content = "글내용 없음"; 
+    	$("#myModal #reviewIdx").val(idx);
+    	$("#myModal #reviewReplyNickName").text(nickName);
+    	$("#myModal #reviewReplyContent").html(content);
+    }
+    
+    // 리뷰 댓글 달기
+    function reviewReplyCheck() {
+    	let replyContent = reviewReplyForm.replyContent.value;
+    	let reviewIdx = reviewReplyForm.reviewIdx.value;
+    	
+    	if(replyContent.trim() == "") {
+    		alert("리뷰 댓글을 입력하세요");
+    		return false;
+    	}
+    	
+    	let query = {
+    			reviewIdx : reviewIdx,
+    			replyMid  : '${sMid}',
+    			replyNickName : '${sNickName}',
+    			replyContent  : replyContent
+    	}
+    	
+    	$.ajax({
+    		url  : "ReviewReplyInputOk.ad",
+    		type : "post",
+    		data : query,
+    		success:function(res) {
+    			if(res != "0") {
+    				alert("댓글이 등록되었습니다.");
+    				location.reload();
+    			}
+    			else alert("댓글 등록 실패~~");
+    		},
+    		error : function() {
+    			alert("전송 오류!");
+    		}
+    	});
+    }
+    
+    // 리뷰 댓글 삭제
+    function reviewReplyDelete(replyIdx) {
+    	let ans = confirm("리뷰 댓글을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		type : "post",
+    		url  : "ReviewReplyDelete.ad",
+    		data : {replyIdx : replyIdx},
+    		success:function(res) {
+    			if(res != "0") {
+    				alert('리뷰댓글이 삭제 되었습니다.');
+    				location.reload();
+    			}
+    			else alert("삭제 실패~~");
+    		},
+    		error : function() {
+    			alert("전송오류!");
+    		}
+    	});
+    }
   </script>
 </head>
 <body>
@@ -178,6 +305,42 @@
 	<h6 id="topBtn" class="text-right mr-3"><img src="${ctp}/images/top.gif" title="위로 이동" /></h6>
 	
 </div>
+
+<!-- 댓글달기를 위한 모달처리 -->
+<div class="modal fade" id="myModal" style="font-size:0.9em;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">>> 리뷰에 댓글달기</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form name="reviewReplyForm" id="reviewReplyForm" class="was-vilidated">
+          <table class="table table-bordered">
+            <tr>
+              <th style="width:25%">원본글작성자</th>
+              <td style="width:75%"><span id="reviewReplyNickName"></span></td>
+            </tr>
+            <tr>
+              <th>원본글</th>
+              <td><span id="reviewReplyContent"></span></td>
+            </tr>
+          </table>
+          <hr/>
+          댓글 작성자 : ${sNickName}<br/>
+          댓글 내용 : <textarea rows="3" name="replyContent" id="replyContent" class="form-control" required></textarea><br/>
+          <input type="button" value="리뷰댓글등록" onclick="reviewReplyCheck()" class="btn btn-success form-control"/>
+          <input type="hidden" name="reviewIdx" id="reviewIdx"/>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <p><br /></p>
 <jsp:include page="/include/footer.jsp" />
 </body>
