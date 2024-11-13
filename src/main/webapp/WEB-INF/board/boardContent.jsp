@@ -87,7 +87,7 @@
 			$("#claimTxt").show();
 		}
   	
-  	//모달탕에서 신고항목 선택후 확인 버튼 클릭시 수행처리(ajax)
+  	//모달창에서 신고항목 선택후 확인 버튼 클릭시 수행처리(ajax)
   	function claimCheck() {
 			//태그선택자=이름  내부에 ""를 안주려면 따로 [] 처리
 			if(!$("input[type=radio][name=claim]:checked").is(':checked')) {

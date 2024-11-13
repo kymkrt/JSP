@@ -208,11 +208,15 @@ public class MemberDAO {
 		public ArrayList<MemberVO> getMemberList(int startIndexNo, int pageSize, int level) {
 			ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
 			try {
-				if(level == 999) {
+				if(level == 999) { //999는 전체 회원 모두 보기(limit) 페이징처리
 					sql = "select * , datediff(now(),lastDate) as elapsed_date from member order by idx desc limit ?,?";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setInt(1, startIndexNo);
 					pstmt.setInt(2, pageSize);
+				}
+				else if(level == 888) { //전체회원모두보기 단 탈퇴신청회원(level=99)은 제외시킨다 페이징처리없음
+					sql = "select * from member where level != 99 order by nickName";
+					pstmt = conn.prepareStatement(sql);
 				}
 				else {
 					sql = "select * , datediff(now(),lastDate) as elapsed_date from member where level=? order by idx desc limit ?,?";
@@ -236,6 +240,8 @@ public class MemberDAO {
 					vo.setTel(rs.getString("tel"));
 					vo.setAddress(rs.getString("address"));
 					vo.setEmail(rs.getString("email"));
+					
+					//content에 엔터키 처리해줘야한다
 					vo.setContent(rs.getString("content"));
 					vo.setPhoto(rs.getString("photo"));
 					vo.setLevel(rs.getInt("level"));
@@ -246,7 +252,7 @@ public class MemberDAO {
 					vo.setTodayCnt(rs.getInt("todayCnt"));
 					vo.setStartDate(rs.getString("startDate"));
 					vo.setLastDate(rs.getString("lastDate"));
-					vo.setElapsed_date(rs.getInt("elapsed_date"));
+					if(level != 888) vo.setElapsed_date(rs.getInt("elapsed_date"));
 					
 					vos.add(vo);
 				}
@@ -434,6 +440,48 @@ public class MemberDAO {
 				pstmtClose();
 			}
 			return res;
+		}
+
+		//ID 검색 리스트
+		public ArrayList<MemberVO> getMemberMidList(String mid) {
+			ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+			try { 
+				sql = "select * from member where mid like ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%"+mid+"%");
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					MemberVO vo = new MemberVO();
+					vo.setIdx(rs.getInt("idx"));
+					vo.setMid(rs.getString("mid"));
+					vo.setPwd(rs.getString("pwd"));
+					vo.setNickName(rs.getString("nickName"));
+					vo.setName(rs.getString("name"));
+					vo.setGender(rs.getString("gender"));
+					vo.setBirthday(rs.getString("birthday"));
+					vo.setTel(rs.getString("tel"));
+					vo.setAddress(rs.getString("address"));
+					vo.setEmail(rs.getString("email"));
+					vo.setContent(rs.getString("content"));
+					vo.setPhoto(rs.getString("photo"));
+					vo.setLevel(rs.getInt("level"));
+					vo.setUserInfo(rs.getString("userInfo"));
+					vo.setUserDel(rs.getString("userDel"));
+					vo.setPoint(rs.getInt("point"));
+					vo.setVisitCnt(rs.getInt("visitCnt"));
+					vo.setTodayCnt(rs.getInt("todayCnt"));
+					vo.setStartDate(rs.getString("startDate"));
+					vo.setLastDate(rs.getString("lastDate"));
+					
+					vos.add(vo);
+				}
+			} catch (SQLException e) {
+				System.out.println("sql오류(getMemberMidList) "+e.getMessage());
+			} finally {
+				rsClose();
+			}
+			return vos;
 		}
 
 }
