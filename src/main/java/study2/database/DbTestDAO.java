@@ -209,5 +209,69 @@ public class DbTestDAO {
 		}
 		return res;
 	}
+
+	//아이디로 검색하여 VO자료 넘겨주기
+	public DbTestVO getIdSearch(String mid) {
+		try {
+			sql = "select * from hoewon3 where mid = ?"; //limit 1,10 인덱스 번호 1번부터 10번. 10 10개가져오기
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			
+			//bof가 있기 때문에 rs.next()로 넘겨줘야함 있으면 true 없으면 false
+			//동명이인이 없으면 if도 되고 while도 된다
+			if(rs.next()) {
+				vo = new DbTestVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setName(rs.getString("name"));
+				vo.setAge(rs.getInt("age"));
+				vo.setGender(rs.getString("gender"));
+				vo.setAddress(rs.getString("address"));
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류(getIdSearch) "+e.getMessage());
+		}finally {
+			//데이터를 지우기 보다는 메모리 관리를 위해 지운다
+			rsClose();
+		}
+		
+		return vo;
+	}
+
+	//id가 비슷한 자료 모두 검색해서 가져오기
+	public ArrayList<DbTestVO> getIdSameSearch(String mid) {
+ArrayList<DbTestVO> vos = new ArrayList<DbTestVO>();
+		
+		try {
+			sql = "select * from hoewon3 where mid like ? order by mid";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+mid+"%");
+			//레코드단위로 가져온다
+			//레코드 단위로 담는것
+			rs = pstmt.executeQuery();
+			
+			//여러개라 if가 아니라 while
+		//bof가 있기 때문에 rs.next()로 넘겨줘야함 있으면 true 없으면 false
+			while(rs.next()) {
+				vo = new DbTestVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setName(rs.getString("name"));
+				vo.setAge(rs.getInt("age"));
+				vo.setGender(rs.getString("gender"));
+				vo.setAddress(rs.getString("address"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 "+e.getMessage());
+		}finally {
+			//데이터를 지우기 보다는 메모리 관리를 위해 지운다
+			rsClose();
+		}
+		
+		return vos;
+	}
 	
 }

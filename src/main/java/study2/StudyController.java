@@ -76,6 +76,9 @@ public class StudyController extends HttpServlet{
 			//viewPage = "/include/message.jsp";
 			return; //여기서 끊어서 가는게 아니라 내용만 보냄
 		}
+		else if(com.equals("/AjaxTest2")) {
+			viewPage += "/ajax/ajaxTest2.jsp";
+		}
 		else if(com.equals("/AjaxPointCheck")) {
 			command = new AjaxPointCheckCommand();//커맨드객체가 서비스 객체 스프링, 실무에선 전부 서비스라고 한다
 			command.execute(request, response);

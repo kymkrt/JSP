@@ -1,7 +1,11 @@
 package study2.database;
 
 public class DbTestVO {
+	
 	private int idx;
+	
+	private String mid;//추가된 필드
+
 	private String name;
 	private int age;
 	private String gender;
@@ -37,10 +41,17 @@ public class DbTestVO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public String getMid() {
+		return mid;
+	}
+	public void setMid(String mid) {
+		this.mid = mid;
+	}
+
 	@Override
 	public String toString() {
-		return "DbTestVO [idx=" + idx + ", name=" + name + ", age=" + age + ", gender=" + gender + ", address=" + address
-				+ "]";
+		return "DbTestVO [idx=" + idx + ", mid=" + mid + ", name=" + name + ", age=" + age + ", gender=" + gender
+				+ ", address=" + address + "]";
 	}
 	
 }
