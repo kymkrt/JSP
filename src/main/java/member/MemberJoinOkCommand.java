@@ -13,6 +13,7 @@ public class MemberJoinOkCommand implements MemberInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
 		String pwd = request.getParameter("pwd")==null ? "" : request.getParameter("pwd");
 		String nickName = request.getParameter("nickName")==null ? "" : request.getParameter("nickName");

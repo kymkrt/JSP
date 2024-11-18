@@ -29,9 +29,9 @@
   	const regexEmail = /^[a-zA-Z0-9]{2,15}\@{1}[a-z]{2,10}\.{1}[a-z]{2,10}$/; 
   	
   	function fCheck() {
-  	    let mid = myform.mid.value;
-  	    let nickName = myform.nickName.value;
-  	    let pwd = myform.pwd.value;
+	    let mid = myform.mid.value;
+	    let nickName = myform.nickName.value;
+	    let pwd = myform.pwd.value;
   	    
   		let tel2 = myform.tel2.value.trim();
   		let tel3 = myform.tel3.value.trim();

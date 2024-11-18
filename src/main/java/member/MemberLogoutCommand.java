@@ -16,7 +16,6 @@ public class MemberLogoutCommand implements MemberInterface {
 		
 		//
 		String nickName = (String) session.getAttribute("sNickName");
-		System.out.println(nickName);
 		//로그아웃이니까 세션 다 지운다
 		session.invalidate();
 		
